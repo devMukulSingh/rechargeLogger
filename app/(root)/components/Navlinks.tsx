@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -24,11 +24,12 @@ const Navlinks = () => {
   return (
     <div className="flex gap-10 ">
       {navlinks.map((link, index) => (
-        <Link 
-            href={link.value} 
-            key={index} 
-            className={`text-lg hover:scale-110 transition-all ${link.isActive ? 'font-bold scale-110 underline' : ''}`}>
-            {link.title}
+        <Link
+          href={link.value}
+          key={index}
+          className={`text-lg hover:scale-110 transition-all ${link.isActive ? "font-bold scale-110 underline" : ""}`}
+        >
+          {link.title}
         </Link>
       ))}
     </div>

@@ -30,7 +30,6 @@ export function DataTable<TData, TValue>({
   columns,
   data,
 }: IdataTableProps<TData, TValue>) {
-
   const { transactions } = useAppSelector((state) => state.rootSlice);
 
   const dispatch = useAppDispatch();
@@ -41,10 +40,9 @@ export function DataTable<TData, TValue>({
   const table = useReactTable({
     data: transactions,
     columns,
-    
+
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-
   });
   return (
     <div>
@@ -61,7 +59,7 @@ export function DataTable<TData, TValue>({
                           ? null
                           : flexRender(
                               header.column.columnDef.header,
-                              header.getContext()
+                              header.getContext(),
                             )}
                       </TableHead>
                     );
@@ -83,7 +81,7 @@ export function DataTable<TData, TValue>({
                       <TableCell key={cell.id}>
                         {flexRender(
                           cell.column.columnDef.cell,
-                          cell.getContext()
+                          cell.getContext(),
                         )}
                       </TableCell>
                     ))}

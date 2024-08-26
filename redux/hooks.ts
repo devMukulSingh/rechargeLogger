@@ -10,4 +10,3 @@ export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 //   It's a function that takes no arguments (() =>) and returns a value of type AppDispatch.
 //  In Redux, AppDispatch is typically the type of the dispatch function.
 export const useAppDispatch: () => AppDispatch = useDispatch;
-

@@ -8,10 +8,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Iform } from "../page";
 
-
-const PlanField = ({
-    form
-}:Iform) => {
+const PlanField = ({ form }: Iform) => {
   return (
     <>
       <FormField

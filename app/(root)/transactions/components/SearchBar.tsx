@@ -17,7 +17,7 @@ export function SearchBar({ tableData }: SearchBarProps) {
     const query = e.target.value.trim().toLowerCase();
     if (query !== "") {
       const filterdData = tableData.filter((item: any) =>
-        item?.mobile?.toLowerCase()?.includes(query)
+        item?.mobile?.toLowerCase()?.includes(query),
       );
       dispatch(setTransactions(filterdData));
     } else dispatch(setTransactions(tableData));

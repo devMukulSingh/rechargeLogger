@@ -2,13 +2,13 @@ import { TransactionColumn } from "@/app/(root)/transactions/components/Transact
 import { Transaction } from "@prisma/client";
 
 export interface IinitialState {
-    transactions: TransactionColumn[]
+  transactions: TransactionColumn[];
 }
 
 export interface ITransactions {
-    operator: string,
-    number: string,
-    createdAt: string,
-    plan: number,
-    dueAmount: number,
+  operator: string;
+  number: string;
+  createdAt: string;
+  plan: number;
+  dueAmount: number;
 }

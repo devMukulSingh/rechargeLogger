@@ -8,10 +8,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Iform } from "../page";
 
-
-const MobileField = ({
-    form
-}:Iform) => {
+const MobileField = ({ form }: Iform) => {
   return (
     <>
       <FormField
@@ -21,7 +18,11 @@ const MobileField = ({
           <FormItem>
             <FormLabel>Mobile</FormLabel>
             <FormControl>
-              <Input placeholder="9808273072" {...field} className="text-black"/>
+              <Input
+                placeholder="9808273072"
+                {...field}
+                className="text-black"
+              />
             </FormControl>
             <FormMessage />
           </FormItem>

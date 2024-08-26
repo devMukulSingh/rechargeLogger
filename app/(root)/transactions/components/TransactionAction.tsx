@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import React, { useState } from "react";
 import {
   DropdownMenu,
@@ -16,29 +16,36 @@ import useSWRMutation from "swr/mutation";
 import toast from "react-hot-toast";
 
 type Props = {
-  data: TransactionColumn
+  data: TransactionColumn;
 };
 
-async function deleteTransaction(url:string,{arg} : {arg:string} ) { return await axios.delete(url,{data:{transactionId:arg}}) };
+async function deleteTransaction(url: string, { arg }: { arg: string }) {
+  return await axios.delete(url, { data: { transactionId: arg } });
+}
 
 const TransactionAction = ({ data }: Props) => {
-    console.log(data,"Data");
-    
-    const router = useRouter();
-    const [isOpen, setIsOpen] = useState<boolean>(false);
-    const { trigger,isMutating } = useSWRMutation(`/api/transaction/delete-transaction`,deleteTransaction,{
-        onSuccess(){
-            toast.success('transaction deleted');
-            setIsOpen(false);
-            router.refresh();
-        },
-        onError(e){
-            toast.error('Something went wrong');
-            console.log(e);
-            
-        }
-    })
-    const handleDelete = async () => { await  trigger(data.id) }
+  console.log(data, "Data");
+
+  const router = useRouter();
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const { trigger, isMutating } = useSWRMutation(
+    `/api/transaction/delete-transaction`,
+    deleteTransaction,
+    {
+      onSuccess() {
+        toast.success("transaction deleted");
+        setIsOpen(false);
+        router.refresh();
+      },
+      onError(e) {
+        toast.error("Something went wrong");
+        console.log(e);
+      },
+    },
+  );
+  const handleDelete = async () => {
+    await trigger(data.id);
+  };
   return (
     <div>
       <AlertModal

@@ -3,14 +3,13 @@
 import { ColumnDef } from "@tanstack/react-table";
 import TransactionAction from "./TransactionAction";
 
-
 export type TransactionColumn = {
   mobile: string;
   operator: string;
   plan: number;
-  dueAmount:number;
-  createdAt:string;
-  id:string
+  dueAmount: number;
+  createdAt: string;
+  id: string;
 };
 
 export const columns: ColumnDef<TransactionColumn>[] = [
@@ -35,7 +34,7 @@ export const columns: ColumnDef<TransactionColumn>[] = [
     header: "Date",
   },
   {
-    id:'actions',
-    cell : ({row}) => <TransactionAction data={row.original}/>
-  }
+    id: "actions",
+    cell: ({ row }) => <TransactionAction data={row.original} />,
+  },
 ];

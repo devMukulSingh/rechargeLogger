@@ -42,7 +42,11 @@ const OperatorField = ({ form }: Iform) => {
         render={({ field }) => (
           <FormItem>
             <FormLabel>Operator</FormLabel>
-            <Select value={field.value} onValueChange={field.onChange} defaultValue="airtel">
+            <Select
+              value={field.value}
+              onValueChange={field.onChange}
+              defaultValue="airtel"
+            >
               <FormControl>
                 <SelectTrigger className="text-black">
                   <SelectValue placeholder="Select operator" />

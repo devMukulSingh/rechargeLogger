@@ -35,8 +35,8 @@ export interface Iform {
   isMutating: boolean;
 }
 
-interface Iarg extends formFields{
-    transactionId:string
+interface Iarg extends formFields {
+  transactionId: string;
 }
 
 async function editTransaction(url: string, { arg }: { arg: Iarg }) {
@@ -62,11 +62,11 @@ const TramsactionEditPage = () => {
         toast.success("Transaction updated");
         router.push(`/transactions`);
       },
-    }
+    },
   );
 
   const transaction = transactions?.find(
-    (tran: TransactionColumn) => tran.id === transactionId
+    (tran: TransactionColumn) => tran.id === transactionId,
   );
   const formatted = {
     plan: transaction?.plan.amount,
@@ -86,7 +86,7 @@ const TramsactionEditPage = () => {
   });
   const onSubmit = async (data: formFields) => {
     await trigger({
-      transactionId:transactionId.toString(),
+      transactionId: transactionId.toString(),
       ...data,
     });
   };

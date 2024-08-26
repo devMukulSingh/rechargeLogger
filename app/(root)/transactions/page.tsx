@@ -19,25 +19,27 @@ export interface ITransactions extends Transaction {
 
 const TransactionsPage = () => {
   const dispatch = useAppDispatch();
-  const { isLoading,data } = useSWR(`/api/transaction/get-transactions`, fetcher, {
-    onError(e) {
-      toast.error("Something went wrong");
-      console.log(e);
+  const { isLoading, data } = useSWR(
+    `/api/transaction/get-transactions`,
+    fetcher,
+    {
+      onError(e) {
+        toast.error("Something went wrong");
+        console.log(e);
+      },
+      onSuccess(data) {},
+      revalidateOnFocus: false,
     },
-    onSuccess(data) {
-      
-    },
-    revalidateOnFocus: false,
-  });
-   const formatted = data?.map((item: ITransactions) => ({
-     plan: item.plan.amount,
-     dueAmount: item.dueAmount,
-     operator: item.operator.name,
-     mobile: item.mobile,
-     createdAt: format(item.createdAt, "HH:mm - dd/MM/yyyy"),
-     id:item.id
-   }));
-   dispatch(setTransactions(formatted));
+  );
+  const formatted = data?.map((item: ITransactions) => ({
+    plan: item.plan.amount,
+    dueAmount: item.dueAmount,
+    operator: item.operator.name,
+    mobile: item.mobile,
+    createdAt: format(item.createdAt, "HH:mm - dd/MM/yyyy"),
+    id: item.id,
+  }));
+  dispatch(setTransactions(formatted));
   // const tableData = await getTransactions() || [];
   return (
     <div className="flex flex-col gap-10 items-center justify-center p-5">
