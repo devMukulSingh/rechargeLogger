@@ -10,8 +10,16 @@ export async function GET(req:NextRequest,res:NextResponse){
 
         const transaction = await prisma.transaction.findMany({
             include:{
-                operator:true,
-                plan:true
+                operator:{
+                    select:{
+                        name:true
+                    }
+                },
+                plan:{
+                    select:{
+                        amount:true
+                    }
+                }
             },
             orderBy:{
                 createdAt:'desc'

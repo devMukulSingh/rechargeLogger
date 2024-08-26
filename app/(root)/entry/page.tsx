@@ -50,12 +50,10 @@ const EntryPage = () => {
 
   });
   const onSubmit = async(data: formFields) => {
-
-   await trigger(data)
-
+  await trigger(data)
   }
   return (
-    <div className="flex items-center justify-center h-full">
+    <div className="flex items-center justify-center h-full py-10">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}

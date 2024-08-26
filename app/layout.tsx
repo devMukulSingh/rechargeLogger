@@ -5,6 +5,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "react-hot-toast";
 import Layout from "./(root)/layout";
 import Providers from "@/lib/Providers";
+import CacheProviders from "@/lib/CacheProviders";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,8 +23,10 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Providers>
-          <Toaster />
-          <ClerkProvider>{children}</ClerkProvider>
+          <CacheProviders>
+            <Toaster />
+            <ClerkProvider>{children}</ClerkProvider>
+          </CacheProviders>
         </Providers>
       </body>
     </html>

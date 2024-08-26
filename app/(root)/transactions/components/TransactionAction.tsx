@@ -22,6 +22,8 @@ type Props = {
 async function deleteTransaction(url:string,{arg} : {arg:string} ) { return await axios.delete(url,{data:{transactionId:arg}}) };
 
 const TransactionAction = ({ data }: Props) => {
+    console.log(data,"Data");
+    
     const router = useRouter();
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const { trigger,isMutating } = useSWRMutation(`/api/transaction/delete-transaction`,deleteTransaction,{
@@ -52,7 +54,7 @@ const TransactionAction = ({ data }: Props) => {
         <DropdownMenuContent>
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
           <DropdownMenuItem
-            onClick={() => router.push(`/transaction/${data.id}`)}
+            onClick={() => router.push(`/transactions/${data.id}`)}
           >
             <Edit className="w-4 h-4 mr-3" /> Edit
           </DropdownMenuItem>

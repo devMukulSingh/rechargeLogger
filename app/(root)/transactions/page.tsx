@@ -1,4 +1,4 @@
-// "use client";
+"use client";
 import { DataTable } from "@/components/DataTable";
 import React, { useState } from "react";
 import { columns } from "./components/TransactionColumn";
@@ -17,32 +17,32 @@ export interface ITransactions extends Transaction {
   operator: Operator;
 }
 
-const TransactionsPage = async() => {
-  // const [tableData, setTableData] = useState([]);
-  // const dispatch = useAppDispatch();
-  // const { isLoading } = useSWR(`/api/transaction/get-transactions`, fetcher, {
-  //   onError(e) {
-  //     toast.error("Something went wrong");
-  //     console.log(e);
-  //   },
-  //   onSuccess(data) {
-  //     console.log(data);
-  //     const formatted = data?.map((item: ITransactions) => ({
-  //       plan: item.plan.amount,
-  //       dueAmount: item.dueAmount,
-  //       operator: item.operator.name,
-  //       mobile: item.mobile,
-  //       createdAt: format(item.createdAt, "HH:mm - dd/MM/yyyy"),
-  //     }));
-  //     dispatch(setTransactions(formatted));
-  //   },
-  //   revalidateOnFocus: false,
-  // });
-  const tableData = await getTransactions() || [];
+const TransactionsPage = () => {
+  const dispatch = useAppDispatch();
+  const { isLoading,data } = useSWR(`/api/transaction/get-transactions`, fetcher, {
+    onError(e) {
+      toast.error("Something went wrong");
+      console.log(e);
+    },
+    onSuccess(data) {
+      
+    },
+    revalidateOnFocus: false,
+  });
+   const formatted = data?.map((item: ITransactions) => ({
+     plan: item.plan.amount,
+     dueAmount: item.dueAmount,
+     operator: item.operator.name,
+     mobile: item.mobile,
+     createdAt: format(item.createdAt, "HH:mm - dd/MM/yyyy"),
+     id:item.id
+   }));
+   dispatch(setTransactions(formatted));
+  // const tableData = await getTransactions() || [];
   return (
     <div className="flex flex-col gap-10 items-center justify-center p-5">
-      <SearchBar tableData={tableData} />
-      <DataTable columns={columns} data={tableData}/>
+      <SearchBar tableData={formatted} />
+      <DataTable columns={columns} data={formatted} />
     </div>
   );
 };
