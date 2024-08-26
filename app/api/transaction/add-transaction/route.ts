@@ -5,10 +5,6 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(req: NextRequest, res: NextResponse) {
   try {
     const { mobile, operator, plan, dueAmount } = await req.json();
-    const { userId } = auth();
-
-    if (!userId)
-      return NextResponse.json({ error: "Unauthenticated" }, { status: 403 });
 
     if (!mobile)
       return NextResponse.json(

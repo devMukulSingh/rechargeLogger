@@ -1,5 +1,4 @@
 import { prisma } from "@/lib/prisma";
-import { auth } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function PUT(req: NextRequest, res: NextResponse) {
@@ -7,10 +6,9 @@ export async function PUT(req: NextRequest, res: NextResponse) {
     const { transactionId, mobile, operator, plan, dueAmount } =
       await req.json();
 
-    const { userId } = auth();
 
-    if (!userId)
-      return NextResponse.json({ error: "Unauthenticated" }, { status: 403 });
+
+
 
     if (!mobile)
       return NextResponse.json(

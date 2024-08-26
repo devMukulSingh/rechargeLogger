@@ -1,15 +1,11 @@
 import { prisma } from "@/lib/prisma";
-import { auth } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function DELETE(req: NextRequest, res: NextResponse) {
   try {
-    const { userId } = auth();
-
-    if (!userId)
-      return NextResponse.json({ error: "Unauthenticated" }, { status: 403 });
 
     const { transactionId } = await req.json();
+
     if (!transactionId)
       return NextResponse.json(
         { error: "transactionId is required" },
