@@ -3,7 +3,6 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function DELETE(req: NextRequest, res: NextResponse) {
   try {
-
     const { transactionId } = await req.json();
 
     if (!transactionId)

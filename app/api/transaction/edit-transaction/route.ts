@@ -6,10 +6,6 @@ export async function PUT(req: NextRequest, res: NextResponse) {
     const { transactionId, mobile, operator, plan, dueAmount } =
       await req.json();
 
-
-
-
-
     if (!mobile)
       return NextResponse.json(
         { error: "Mobile is required" },

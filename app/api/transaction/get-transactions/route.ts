@@ -3,8 +3,6 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest, res: NextResponse) {
   try {
-
-
     const transaction = await prisma.transaction.findMany({
       include: {
         operator: {

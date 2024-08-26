@@ -2,3 +2,5 @@
 npx tsc --noemit
 
 npx prettier . --write
+
+npm run lint
