@@ -20,24 +20,35 @@ import TableSkeleton from "./TableSkeleton";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { setTransactions } from "@/redux/slice";
 import { TransactionColumn } from "@/app/(root)/transactions/components/TransactionColumn";
+import useSWR from "swr";
+import { ITransactions } from "@/app/(root)/transactions/page";
+import { format } from "date-fns";
+
 
 interface IdataTableProps<TData, TValue> {
   columns: ColumnDef<TransactionColumn, TValue>[];
-  data: TData[];
+  // data: TData[];
 }
 
 export function DataTable<TData, TValue>({
   columns,
-  data,
 }: IdataTableProps<TData, TValue>) {
   const { transactions } = useAppSelector((state) => state.rootSlice);
+  const { data } = useSWR(`/api/transaction/get-transactions`);
 
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(setTransactions(data));
+    const formatted = data?.map((item: ITransactions) => ({
+      plan: item.plan.amount,
+      dueAmount: item.dueAmount,
+      operator: item.operator.name,
+      mobile: item.mobile,
+      createdAt: format(item.createdAt, "HH:mm - dd/MM/yyyy"),
+      id: item.id,
+    }));
+    dispatch(setTransactions(formatted));
   }, []);
-
   const table = useReactTable({
     data: transactions,
     columns,

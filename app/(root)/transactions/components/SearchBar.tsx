@@ -4,28 +4,32 @@ import { Search, X } from "lucide-react";
 import { useAppDispatch } from "@/redux/hooks";
 import { setTransactions } from "@/redux/slice";
 import { Input } from "@/components/ui/input";
+import useSWR from "swr";
 
 interface SearchBarProps {
   tableData: any;
 }
 
 export function SearchBar({ tableData }: SearchBarProps) {
+
+  const { data } = useSWR(`/api/transaction/get-transactions`);
+
   const [query, setQuery] = useState("");
   const dispatch = useAppDispatch();
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value);
     const query = e.target.value.trim().toLowerCase();
     if (query !== "") {
-      const filterdData = tableData.filter((item: any) =>
-        item?.mobile?.toLowerCase()?.includes(query),
+      const filterdData = data.filter((item: any) =>
+        item?.mobile?.toLowerCase()?.includes(query)
       );
       dispatch(setTransactions(filterdData));
-    } else dispatch(setTransactions(tableData));
+    } else dispatch(setTransactions(data));
   };
 
   const handleClearSearch = () => {
     setQuery("");
-    dispatch(setTransactions(tableData));
+    dispatch(setTransactions(data));
   };
   return (
     <div
