@@ -1,4 +1,3 @@
-"use client";
 export function localStorageProvider() {
   if (typeof window !== "undefined") {
     const map = new Map(JSON.parse(localStorage.getItem("app-cache") || "[]"));
@@ -9,4 +8,5 @@ export function localStorageProvider() {
     });
     return map;
   }
+  return new Map();
 }
