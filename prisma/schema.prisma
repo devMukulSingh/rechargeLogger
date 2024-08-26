@@ -1,0 +1,33 @@
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Transaction{
+  id            String                  @id@default(uuid())
+  mobile        String
+  dueAmount     Int                     @default(0)
+  plan          Plan                    @relation("transactionToPlan",references: [id],fields: [planId])
+  planId        String
+  operator      Operator                @relation("transactionToOperator",fields: [operatorId],references: [id])
+  operatorId    String
+  createdAt     DateTime                @default(now())
+}
+
+model Plan{
+  id            String                    @id@default(uuid())
+  amount        Int               
+  transaction   Transaction[]            @relation("transactionToPlan")
+}
+
+model Operator{
+  id              String               @id@default(uuid())
+  name            String       
+  transaction      Transaction[]        @relation("transactionToOperator")
+}
+
