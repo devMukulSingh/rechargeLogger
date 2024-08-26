@@ -1,5 +1,4 @@
 "use client";
-import { DataTable } from "@/components/DataTable";
 import React, { useState } from "react";
 import { columns } from "./components/TransactionColumn";
 import { fetcher } from "@/lib/utils";
@@ -10,6 +9,10 @@ import { setTransactions } from "@/redux/slice";
 import { format } from "date-fns";
 import { Operator, Plan, Transaction } from "@prisma/client";
 import toast from "react-hot-toast";
+import dynamic from "next/dynamic";
+const  DataTable =  dynamic( () => import('@/components/DataTable').then(table => table.DataTable),{
+  ssr:false,
+})
 
 export interface ITransactions extends Transaction {
   plan: Plan;
@@ -38,7 +41,7 @@ const TransactionsPage = () => {
     createdAt: format(item.createdAt, "HH:mm - dd/MM/yyyy"),
     id: item.id,
   }));
-  dispatch(setTransactions(formatted)); 
+  dispatch(setTransactions(formatted));
   // const tableData = await getTransactions() || [];
   return (
     <div className="flex flex-col gap-10 items-center justify-center p-5">

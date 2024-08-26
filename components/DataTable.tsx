@@ -33,7 +33,7 @@ export function DataTable<TData, TValue>({
   const { transactions } = useAppSelector((state) => state.rootSlice);
 
   const dispatch = useAppDispatch();
-  
+
   useEffect(() => {
     dispatch(setTransactions(data));
   }, []);
