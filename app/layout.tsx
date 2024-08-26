@@ -25,7 +25,7 @@ export default function RootLayout({
         <Providers>
           <CacheProviders>
             <Toaster />
-            <ClerkProvider>{children}</ClerkProvider>
+            {children}
           </CacheProviders>
         </Providers>
       </body>
