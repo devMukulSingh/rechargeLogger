@@ -17,6 +17,7 @@ export const getTransactions = cache(async() => {
         operator:item.operator.name,
         mobile:item.mobile,
         createdAt:format(item.createdAt,"dd/MM/yyyy"),
+        id:item.id
     }))
     
         return formatted;

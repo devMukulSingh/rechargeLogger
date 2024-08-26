@@ -1,6 +1,7 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
+import TransactionAction from "./TransactionAction";
 
 
 export type TransactionColumn = {
@@ -8,7 +9,8 @@ export type TransactionColumn = {
   operator: string;
   plan: number;
   dueAmount:number;
-  createdAt:string
+  createdAt:string;
+  id:string
 };
 
 export const columns: ColumnDef<TransactionColumn>[] = [
@@ -32,4 +34,8 @@ export const columns: ColumnDef<TransactionColumn>[] = [
     accessorKey: "createdAt",
     header: "Date",
   },
+  {
+    id:'actions',
+    cell : ({row}) => <TransactionAction data={row.original}/>
+  }
 ];
