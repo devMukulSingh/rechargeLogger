@@ -1,6 +1,7 @@
+'use client'
 export function localStorageProvider() {
   // When initializing, we restore the data from `localStorage` into a map.
-  const map = new Map(JSON.parse(localStorage.getItem("app-cache") || "[]"));
+  const map = typeof window!=='undefined' ? new Map(JSON.parse(localStorage.getItem("app-cache") || "[]")) : new Map();
 
   // Before unloading the app, we write back all the data into `localStorage`.
   window.addEventListener("beforeunload", () => {
