@@ -8,7 +8,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Iform } from "../page";
 
-const DueAmountField = ({ form,isMutating }: Iform) => {
+const DueAmountField = ({ form, isMutating }: Iform) => {
   return (
     <>
       <FormField

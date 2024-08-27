@@ -24,10 +24,12 @@ export const columns: ColumnDef<TransactionColumn>[] = [
   {
     accessorKey: "plan",
     header: "Plan",
+    cell: ({ row }) => <>{`₹${row.original.plan}`}</>,
   },
   {
     accessorKey: "dueAmount",
     header: "Due amount",
+    cell: ({ row }) => <>{`₹${row.original.dueAmount}`}</>,
   },
   {
     accessorKey: "createdAt",

@@ -14,7 +14,7 @@ import dynamic from "next/dynamic";
 import { ITransactions } from "../../transactions/page";
 
 const TotalRevenue = lazy(
-  () => import("@/app/(root)/(dashboard)/components/TotalRevenue")
+  () => import("@/app/(root)/(dashboard)/components/TotalRevenue"),
 );
 const Sales = lazy(() => import("@/app/(root)/(dashboard)/components/Sales"));
 
@@ -41,7 +41,7 @@ const DashboardData: FC<DashboardDataProps> = () => {
           data
             ?.filter(
               (tran) =>
-                new Date(tran.createdAt).getMonth() === Number(currentMonth)
+                new Date(tran.createdAt).getMonth() === Number(currentMonth),
             )
             .flat() || [];
         setSelectedMonthTransactions(currMonthTransactions?.length);
@@ -57,14 +57,14 @@ const DashboardData: FC<DashboardDataProps> = () => {
           console.log(filteredRevenue, "filteredRevenue");
         }
       },
-    }
+    },
   );
 
   //handling month change eveent
   const handleMonthChange = (selectedMonth: string) => {
     const currMonthTransactions =
       transactions?.filter(
-        (tran) => new Date(tran.createdAt).getMonth() === Number(selectedMonth)
+        (tran) => new Date(tran.createdAt).getMonth() === Number(selectedMonth),
       ) || [];
     setSelectedMonthTransactions(currMonthTransactions.length);
 

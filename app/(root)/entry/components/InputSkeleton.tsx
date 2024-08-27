@@ -1,5 +1,5 @@
-import { Skeleton } from '@/components/ui/skeleton'
-import React from 'react'
+import { Skeleton } from "@/components/ui/skeleton";
+import React from "react";
 
 const InputSkeleton = () => {
   return (
@@ -10,6 +10,6 @@ const InputSkeleton = () => {
       <Skeleton className="w-[216px] bg-slate-200 h-[40px]" />
     </div>
   );
-}
+};
 
-export default InputSkeleton
+export default InputSkeleton;

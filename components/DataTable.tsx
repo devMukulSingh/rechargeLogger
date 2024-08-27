@@ -48,7 +48,7 @@ export default function DataTable<TData, TValue>({
       id: item.id,
     }));
     dispatch(setTransactions(formatted));
-    setIsMounted(true)
+    setIsMounted(true);
   }, []);
   const table = useReactTable({
     data: transactions,
@@ -56,23 +56,23 @@ export default function DataTable<TData, TValue>({
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
   });
-  if(!isMounted) return null;
+  if (!isMounted) return null;
   return (
-    <div>
+    <div className="md:w-3/4 w-full space-y-5">
       <div>
         <Table>
-          <TableHeader>
+          <TableHeader >
             {table.getHeaderGroups().map((headerGroup) => {
               return (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => {
                     return (
-                      <TableHead key={header.id}>
+                      <TableHead key={header.id} className="text-neutral-100 font-semibold text-lg">
                         {header.isPlaceholder
                           ? null
                           : flexRender(
                               header.column.columnDef.header,
-                              header.getContext(),
+                              header.getContext()
                             )}
                       </TableHead>
                     );

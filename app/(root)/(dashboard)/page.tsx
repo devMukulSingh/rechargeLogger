@@ -6,7 +6,7 @@ const ChartSection = dynamic(
   () => import("@/app/(root)/(dashboard)/components/ChartSection"),
   {
     loading: () => <ChartSkeleton />,
-  }
+  },
 );
 // const DashboardData = dynamic(
 //   () => import("@/app/(root)/(dashboard)/components/DashboardData"),

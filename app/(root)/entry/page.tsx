@@ -4,10 +4,10 @@ import { rechargeSchema } from "@/lib/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import { useForm, UseFormReturn } from "react-hook-form";
-const MobileField = dynamic( () => import("./components/MobileField"))
-const OperatorField = dynamic(() => import("./components/OperatorField"))
-const DueAmountField = dynamic( () => import("./components/DueAmountField"))
-const PlanField = dynamic( () => import("./components/PlanField"));
+const MobileField = dynamic(() => import("./components/MobileField"));
+const OperatorField = dynamic(() => import("./components/OperatorField"));
+const DueAmountField = dynamic(() => import("./components/DueAmountField"));
+const PlanField = dynamic(() => import("./components/PlanField"));
 import { Button } from "@/components/ui/button";
 import { z } from "zod";
 import axios from "axios";
