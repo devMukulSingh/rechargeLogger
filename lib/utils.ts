@@ -8,7 +8,6 @@ export function cn(...inputs: ClassValue[]) {
 
 export const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 
-
 export const months = [
   "January",
   "Febuary",

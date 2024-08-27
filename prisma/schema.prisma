@@ -17,6 +17,7 @@ model Transaction{
   operator      Operator                @relation("transactionToOperator",fields: [operatorId],references: [id])
   operatorId    String
   createdAt     DateTime                @default(now())
+  userId        String
 }
 
 model Plan{

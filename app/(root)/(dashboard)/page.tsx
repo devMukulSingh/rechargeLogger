@@ -5,17 +5,16 @@ const ChartSection = dynamic(
   () => import("@/app/(root)/(dashboard)/components/ChartSection"),
   {
     loading: () => <ChartSkeleton />,
-  }
+  },
 );
 const DashboardData = dynamic(
   () => import("@/app/(root)/(dashboard)/components/DashboardData"),
   {
     loading: () => <DashboardDataSkeleton />,
-  }
+  },
 );
 
 const DashboardPage = async () => {
-
   return (
     <div className="px-5 py-3 lg:px-15 md:px-10 space-y-5">
       <header>

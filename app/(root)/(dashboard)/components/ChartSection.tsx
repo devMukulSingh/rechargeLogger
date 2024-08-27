@@ -8,12 +8,13 @@ export interface IgraphData {
   name: string;
   total: number;
 }
-interface ChartSectionProps {
-}
+interface ChartSectionProps {}
 
-const ChartSection: React.FC<ChartSectionProps> = async ({  }) => {
-  const [graphData, setGraphData] = useState<IgraphData[]>([])
-  const { data:transactions } = useSWR<ITransactions[]>( `/api/transaction/get-transactions`,);
+const ChartSection: React.FC<ChartSectionProps> = async ({}) => {
+  const [graphData, setGraphData] = useState<IgraphData[]>([]);
+  const { data: transactions } = useSWR<ITransactions[]>(
+    `/api/transaction/get-transactions`,
+  );
   const getGraphData = () => {
     const graphData: IgraphData[] = [
       { name: "Jan", total: 0 },
@@ -33,10 +34,10 @@ const ChartSection: React.FC<ChartSectionProps> = async ({  }) => {
     let i = 1;
     if (transactions) {
       // console.log(transactions);
-      
+
       for (let obj of graphData) {
         console.log(transactions);
-        
+
         let totalMonthlyRevenue = 0;
         //getting totalRevenue of a particular month
         totalMonthlyRevenue = transactions
@@ -50,17 +51,21 @@ const ChartSection: React.FC<ChartSectionProps> = async ({  }) => {
         i++;
       }
     }
-    return graphData
+    return graphData;
   };
 
-  useEffect( () => {
+  useEffect(() => {
     const data = getGraphData();
     setGraphData(data);
-  },[])
+  }, []);
 
   return (
     <>
-      <ResponsiveContainer width="100%" height={350} className={'border p-2 rounded-md'}>
+      <ResponsiveContainer
+        width="100%"
+        height={350}
+        className={"border p-2 rounded-md"}
+      >
         <BarChart data={graphData}>
           <XAxis
             dataKey="name"

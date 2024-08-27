@@ -1,8 +1,15 @@
 import { prisma } from "@/lib/prisma";
+import { auth } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function PUT(req: NextRequest, res: NextResponse) {
   try {
+    const { userId } = auth();
+
+    if (!userId) return NextResponse.json({
+      error: "Unauthenticated"
+    }, { status: 403 });
+
     const { transactionId, mobile, operator, plan, dueAmount } =
       await req.json();
 
@@ -36,6 +43,7 @@ export async function PUT(req: NextRequest, res: NextResponse) {
       },
       where: {
         id: transactionId,
+        userId
       },
     });
 
