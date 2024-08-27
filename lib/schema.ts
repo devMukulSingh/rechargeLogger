@@ -1,11 +1,9 @@
 import { z } from "zod";
 
 export const rechargeSchema = z.object({
-  mobile: z.coerce
-    .number()
-    .refine(num => num.toString().length === 10,{
-      message:'Number must be 10 in length'
-    }),
+  mobile: z.coerce.number().refine((num) => num.toString().length === 10, {
+    message: "Number must be 10 in length",
+  }),
   operator: z.string().min(1, {
     message: "Operator is required",
   }),

@@ -24,18 +24,7 @@ export interface ITransactions extends Transaction {
 
 const TransactionsPage = () => {
   const dispatch = useAppDispatch();
-  const { isLoading, data } = useSWR(
-    `/api/transaction/get-transactions`,
-    fetcher,
-    {
-      onError(e) {
-        toast.error("Something went wrong");
-        console.log(e);
-      },
-      onSuccess(data) {},
-      revalidateOnFocus: false,
-    },
-  );
+  const { isLoading, data } = useSWR(`/api/transaction/get-transactions`);
   const formatted = data?.map((item: ITransactions) => ({
     plan: item.plan.amount,
     dueAmount: item.dueAmount,
@@ -49,7 +38,7 @@ const TransactionsPage = () => {
   return (
     <div className="flex flex-col gap-10 items-center justify-center p-5">
       <SearchBar tableData={formatted} />
-      <DataTable columns={columns}  />
+      <DataTable columns={columns} />
     </div>
   );
 };

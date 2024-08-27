@@ -11,7 +11,6 @@ interface SearchBarProps {
 }
 
 export function SearchBar({ tableData }: SearchBarProps) {
-
   const { data } = useSWR(`/api/transaction/get-transactions`);
 
   const [query, setQuery] = useState("");
@@ -21,7 +20,7 @@ export function SearchBar({ tableData }: SearchBarProps) {
     const query = e.target.value.trim().toLowerCase();
     if (query !== "") {
       const filterdData = data.filter((item: any) =>
-        item?.mobile?.toLowerCase()?.includes(query)
+        item?.mobile?.toLowerCase()?.includes(query),
       );
       dispatch(setTransactions(filterdData));
     } else dispatch(setTransactions(data));

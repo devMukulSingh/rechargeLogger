@@ -51,12 +51,12 @@ const EntryPage = () => {
   );
   const form = useForm<formFields>({
     resolver: zodResolver(rechargeSchema),
-    defaultValues:{
-      dueAmount:0,
-      mobile:undefined,
-      operator:'',
-      plan:299
-    }
+    defaultValues: {
+      dueAmount: 0,
+      mobile: undefined,
+      operator: "",
+      plan: 299,
+    },
   });
   const onSubmit = async (data: formFields) => {
     await trigger(data);

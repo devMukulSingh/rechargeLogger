@@ -24,7 +24,6 @@ import useSWR from "swr";
 import { ITransactions } from "@/app/(root)/transactions/page";
 import { format } from "date-fns";
 
-
 interface IdataTableProps<TData, TValue> {
   columns: ColumnDef<TransactionColumn, TValue>[];
   // data: TData[];
