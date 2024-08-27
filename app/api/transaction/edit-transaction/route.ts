@@ -6,9 +6,13 @@ export async function PUT(req: NextRequest, res: NextResponse) {
   try {
     const { userId } = auth();
 
-    if (!userId) return NextResponse.json({
-      error: "Unauthenticated"
-    }, { status: 403 });
+    if (!userId)
+      return NextResponse.json(
+        {
+          error: "Unauthenticated",
+        },
+        { status: 403 },
+      );
 
     const { transactionId, mobile, operator, plan, dueAmount } =
       await req.json();
@@ -43,7 +47,7 @@ export async function PUT(req: NextRequest, res: NextResponse) {
       },
       where: {
         id: transactionId,
-        userId
+        userId,
       },
     });
 

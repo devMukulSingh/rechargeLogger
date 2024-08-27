@@ -7,9 +7,13 @@ export async function POST(req: NextRequest, res: NextResponse) {
     const { userId } = auth();
     const { mobile, operator, plan, dueAmount } = await req.json();
 
-    if(!userId) return NextResponse.json({
-      error:'Unauthenticated'
-    },{status:403});
+    if (!userId)
+      return NextResponse.json(
+        {
+          error: "Unauthenticated",
+        },
+        { status: 403 },
+      );
 
     if (!mobile)
       return NextResponse.json(
