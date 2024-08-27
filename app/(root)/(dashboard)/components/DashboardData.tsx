@@ -14,10 +14,9 @@ import dynamic from "next/dynamic";
 import { ITransactions } from "../../transactions/page";
 
 const TotalRevenue = lazy(
-  () => import("@/app/(root)/(dashboard)/components/TotalRevenue"),
+  () => import("@/app/(root)/(dashboard)/components/TotalRevenue")
 );
 const Sales = lazy(() => import("@/app/(root)/(dashboard)/components/Sales"));
-const ProductInStock = lazy(() => import("./ProductInStock"));
 
 interface DashboardDataProps {}
 
@@ -42,7 +41,7 @@ const DashboardData: FC<DashboardDataProps> = () => {
           data
             ?.filter(
               (tran) =>
-                new Date(tran.createdAt).getMonth() === Number(currentMonth),
+                new Date(tran.createdAt).getMonth() === Number(currentMonth)
             )
             .flat() || [];
         setSelectedMonthTransactions(currMonthTransactions?.length);
@@ -58,14 +57,14 @@ const DashboardData: FC<DashboardDataProps> = () => {
           console.log(filteredRevenue, "filteredRevenue");
         }
       },
-    },
+    }
   );
 
   //handling month change eveent
   const handleMonthChange = (selectedMonth: string) => {
     const currMonthTransactions =
       transactions?.filter(
-        (tran) => new Date(tran.createdAt).getMonth() === Number(selectedMonth),
+        (tran) => new Date(tran.createdAt).getMonth() === Number(selectedMonth)
       ) || [];
     setSelectedMonthTransactions(currMonthTransactions.length);
 
@@ -86,10 +85,7 @@ const DashboardData: FC<DashboardDataProps> = () => {
         defaultValue={currentMonth.toString()}
         onValueChange={(selectedMonth) => handleMonthChange(selectedMonth)}
       >
-        <SelectTrigger
-          disabled={isLoading}
-          className="w-full sm:w-1/3 text-black"
-        >
+        <SelectTrigger className="w-full sm:w-1/3 text-black">
           <SelectValue placeholder="Select month" />
         </SelectTrigger>
         <SelectContent className="">
@@ -100,17 +96,15 @@ const DashboardData: FC<DashboardDataProps> = () => {
           ))}
         </SelectContent>
       </Select>
-      <section className="grid grid-cols-1 lg:grid-cols-4 md:grid-cols-3 gap-3">
+
+      <div className="grid grid-cols-1 lg:grid-cols-4 md:grid-cols-3 gap-3">
         <Suspense fallback={<CardSkeleton />}>
           <TotalRevenue selectedMonthRevenue={selectedMonthRevenue} />
         </Suspense>
         <Suspense fallback={<CardSkeleton />}>
           <Sales selectedMonthTransactions={selectedMonthTransactions} />
         </Suspense>
-        <Suspense fallback={<CardSkeleton />}>
-          {/* <ProductInStock  /> */}
-        </Suspense>
-      </section>
+      </div>
     </div>
   );
 };

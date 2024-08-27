@@ -8,7 +8,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Iform } from "../page";
 
-const MobileField = ({ form }: Iform) => {
+const MobileField = ({ form, isMutating }: Iform) => {
   return (
     <>
       <FormField
@@ -22,6 +22,7 @@ const MobileField = ({ form }: Iform) => {
                 placeholder="9808273072"
                 {...field}
                 className="text-black"
+                disabled={isMutating}
               />
             </FormControl>
             <FormMessage />

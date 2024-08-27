@@ -1,18 +1,19 @@
 import dynamic from "next/dynamic";
-import ChartSkeleton from "./components/CardSkeleton";
+import ChartSkeleton from "./components/ChartSkeleton";
 import DashboardDataSkeleton from "./components/DashboardDataSkeleton";
+import DashboardData from "./components/DashboardData";
 const ChartSection = dynamic(
   () => import("@/app/(root)/(dashboard)/components/ChartSection"),
   {
     loading: () => <ChartSkeleton />,
-  },
+  }
 );
-const DashboardData = dynamic(
-  () => import("@/app/(root)/(dashboard)/components/DashboardData"),
-  {
-    loading: () => <DashboardDataSkeleton />,
-  },
-);
+// const DashboardData = dynamic(
+//   () => import("@/app/(root)/(dashboard)/components/DashboardData"),
+//   {
+//     loading: () => <DashboardDataSkeleton />,
+//   },
+// );
 
 const DashboardPage = async () => {
   return (
@@ -21,7 +22,7 @@ const DashboardPage = async () => {
         <h1 className="text-3xl font-bold">Dasboard</h1>
         <h1>Manage Dashboard</h1>
       </header>
-
+      {/* <DashboardDataSkeleton/> */}
       <DashboardData />
       <ChartSection />
     </div>

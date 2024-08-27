@@ -1,25 +1,17 @@
 "use client";
-import React, { useState } from "react";
+import React, { lazy, Suspense, useState } from "react";
 import { columns } from "./components/TransactionColumn";
 import { fetcher } from "@/lib/utils";
 import useSWR from "swr";
-import SearchBar from "./components/SearchBar";
 import { useAppDispatch } from "@/redux/hooks";
 import { setTransactions } from "@/redux/slice";
 import { format } from "date-fns";
 import { Operator, Plan, Transaction } from "@prisma/client";
 import dynamic from "next/dynamic";
+import TableSkeleton from "@/components/TableSkeleton";
+const SearchBar = lazy(() => import("./components/SearchBar"));
+const  DataTable = lazy(() => import("@/components/DataTable"));
 
-const TableSkeleton = dynamic(() => import("@/components/TableSkeleton"), {
-  ssr: false,
-});
-
-const DataTable = dynamic(
-  () => import("@/components/DataTable").then((table) => table.DataTable),
-  {
-    ssr: false,
-  },
-);
 
 export interface ITransactions extends Transaction {
   plan: Plan;
@@ -33,7 +25,7 @@ const TransactionsPage = () => {
     fetcher,
     {
       revalidateOnFocus: false,
-    },
+    }
   );
   const formatted = data?.map((item: ITransactions) => ({
     plan: item.plan.amount,
@@ -47,8 +39,10 @@ const TransactionsPage = () => {
   // const tableData = await getTransactions() || [];
   return (
     <div className="flex flex-col gap-10 items-center justify-center p-5">
-      <SearchBar tableData={formatted} />
-      <DataTable columns={columns} />
+      <Suspense fallback={<TableSkeleton/>}>
+        <SearchBar tableData={formatted} />
+        <DataTable columns={columns} />
+      </Suspense>
     </div>
   );
 };

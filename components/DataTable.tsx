@@ -14,7 +14,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Suspense, useCallback, useEffect } from "react";
+import { Suspense, useCallback, useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import TableSkeleton from "./TableSkeleton";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
@@ -29,9 +29,10 @@ interface IdataTableProps<TData, TValue> {
   // data: TData[];
 }
 
-export function DataTable<TData, TValue>({
+export default function DataTable<TData, TValue>({
   columns,
 }: IdataTableProps<TData, TValue>) {
+  const [isMounted, setIsMounted] = useState(false);
   const { transactions } = useAppSelector((state) => state.rootSlice);
   const { data } = useSWR(`/api/transaction/get-transactions`);
 
@@ -47,6 +48,7 @@ export function DataTable<TData, TValue>({
       id: item.id,
     }));
     dispatch(setTransactions(formatted));
+    setIsMounted(true)
   }, []);
   const table = useReactTable({
     data: transactions,
@@ -54,6 +56,7 @@ export function DataTable<TData, TValue>({
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
   });
+  if(!isMounted) return null;
   return (
     <div>
       <div>

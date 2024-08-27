@@ -8,7 +8,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Iform } from "../page";
 
-const PlanField = ({ form }: Iform) => {
+const PlanField = ({ form, isMutating }: Iform) => {
   return (
     <>
       <FormField
@@ -18,7 +18,12 @@ const PlanField = ({ form }: Iform) => {
           <FormItem>
             <FormLabel>Plan &#40;in ₹&#41;</FormLabel>
             <FormControl>
-              <Input placeholder="299" {...field} className="text-black" />
+              <Input
+                placeholder="299"
+                {...field}
+                className="text-black"
+                disabled={isMutating}
+              />
             </FormControl>
             <FormMessage />
           </FormItem>

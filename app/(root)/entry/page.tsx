@@ -4,15 +4,16 @@ import { rechargeSchema } from "@/lib/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import { useForm, UseFormReturn } from "react-hook-form";
-import MobileField from "./components/MobileField";
-import OperatorField from "./components/OperatorField";
+const MobileField = dynamic( () => import("./components/MobileField"))
+const OperatorField = dynamic(() => import("./components/OperatorField"))
+const DueAmountField = dynamic( () => import("./components/DueAmountField"))
+const PlanField = dynamic( () => import("./components/PlanField"));
 import { Button } from "@/components/ui/button";
 import { z } from "zod";
-import DueAmountField from "./components/DueAmountField";
-import PlanField from "./components/PlanField";
 import axios from "axios";
 import useSWRMutation from "swr/mutation";
 import toast from "react-hot-toast";
+import dynamic from "next/dynamic";
 
 export interface Iform {
   form: UseFormReturn<
@@ -66,7 +67,7 @@ const EntryPage = () => {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="grid grid-cols-2 gap-5 border py-5 px-10 rounded-md shadow-xl "
+          className="grid grid-cols-2 gap-5 border py-5 px-10 rounded-md shadow-xl w-[35rem] h-[17rem]"
         >
           <MobileField form={form} isMutating={isMutating} />
           <PlanField form={form} isMutating={isMutating} />

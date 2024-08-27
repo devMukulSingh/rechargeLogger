@@ -14,7 +14,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const OperatorField = ({ form }: Iform) => {
+const OperatorField = ({ form, isMutating }: Iform) => {
   const operators = [
     {
       title: "Jio",
@@ -43,6 +43,7 @@ const OperatorField = ({ form }: Iform) => {
           <FormItem>
             <FormLabel>Operator</FormLabel>
             <Select
+              disabled={isMutating}
               value={field.value}
               onValueChange={field.onChange}
               defaultValue="airtel"

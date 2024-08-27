@@ -1,12 +1,11 @@
-import { Skeleton } from "@/components/ui/skeleton";
-import React from "react";
+import { Skeleton } from '@/components/ui/skeleton'
+import React from 'react'
 
-const ChartSkeleton = () => {
+const CardSkeleton = () => {
   return (
-    <>
-      <Skeleton className="w-auto h-[350px]" />
-    </>
-  );
-};
+    <Skeleton className='w-[346px] h-[56px] bg-slate-300'/>
+        
+  )
+}
 
-export default ChartSkeleton;
+export default CardSkeleton
