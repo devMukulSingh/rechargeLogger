@@ -10,7 +10,6 @@ export const rootSlice = createSlice({
   name: "rootSlice",
   reducers: {
     setTransactions: (state, action) => {
-      
       state.transactions = action.payload;
     },
   },

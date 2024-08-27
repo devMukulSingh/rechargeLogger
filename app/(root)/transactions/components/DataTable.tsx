@@ -15,14 +15,16 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Suspense, useCallback, useEffect, useState } from "react";
-import { Button } from "./ui/button";
-import TableSkeleton from "./TableSkeleton";
+
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { setTransactions } from "@/redux/slice";
 import { TransactionColumn } from "@/app/(root)/transactions/components/TransactionColumn";
 import useSWR from "swr";
 import { ITransactions } from "@/app/(root)/transactions/page";
 import { format } from "date-fns";
+import { Button } from "@/components/ui/button";
+import TableSkeleton from "@/components/TableSkeleton";
+import { fetcher } from "@/lib/utils";
 
 interface IdataTableProps<TData, TValue> {
   columns: ColumnDef<TransactionColumn, TValue>[];
@@ -34,8 +36,10 @@ export default function DataTable<TData, TValue>({
 }: IdataTableProps<TData, TValue>) {
   const [isMounted, setIsMounted] = useState(false);
   const { transactions } = useAppSelector((state) => state.rootSlice);
-  
-  const { data } = useSWR(`/api/transaction/get-transactions`);
+
+  const { data } = useSWR(`/api/transaction/get-transactions`,fetcher,{
+    revalidateOnFocus:false
+  });
 
   const dispatch = useAppDispatch();
 

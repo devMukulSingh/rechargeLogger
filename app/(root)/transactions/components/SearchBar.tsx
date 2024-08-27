@@ -13,18 +13,11 @@ interface SearchBarProps {
   // tableData: any;
 }
 
-export function SearchBar({  }: SearchBarProps) {
-  
+export function SearchBar({}: SearchBarProps) {
   const [query, setQuery] = useState("");
   const dispatch = useAppDispatch();
 
-  const { isLoading, data:transactions } = useSWR<ITransactions[]>(
-    `/api/transaction/get-transactions`,
-    fetcher,
-    {
-      revalidateOnFocus: false,
-    }
-  );
+  const { isLoading, data: transactions } = useSWR<ITransactions[]>(`/api/transaction/get-transactions`,);
   const formatted = transactions?.map((item) => ({
     plan: item.plan.amount,
     dueAmount: item.dueAmount,
@@ -38,11 +31,12 @@ export function SearchBar({  }: SearchBarProps) {
     setQuery(e.target.value);
     const query = e.target.value.trim().toLowerCase();
     if (query !== "") {
-      
-      const filterdData = formatted?.filter((item) =>
-        item?.mobile?.toLowerCase()?.includes(query) || item.operator.toLowerCase().includes(query)
+      const filterdData = formatted?.filter(
+        (item) =>
+          item?.mobile?.toLowerCase()?.includes(query) ||
+          item.operator.toLowerCase().includes(query),
       );
-      
+
       dispatch(setTransactions(filterdData));
     } else dispatch(setTransactions(formatted));
   };
