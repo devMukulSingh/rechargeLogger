@@ -1,34 +1,55 @@
 "use client";
 import React, { FC, useState } from "react";
 import { Search, X } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { fetcher } from "@/lib/utils";
+import useSWR from "swr";
 import { useAppDispatch } from "@/redux/hooks";
 import { setTransactions } from "@/redux/slice";
-import { Input } from "@/components/ui/input";
-import useSWR from "swr";
+import { format } from "date-fns";
+import { ITransactions } from "../page";
 
 interface SearchBarProps {
-  tableData: any;
+  // tableData: any;
 }
 
-export function SearchBar({ tableData }: SearchBarProps) {
-  const { data } = useSWR(`/api/transaction/get-transactions`);
-
+export function SearchBar({  }: SearchBarProps) {
+  
   const [query, setQuery] = useState("");
   const dispatch = useAppDispatch();
+
+  const { isLoading, data:transactions } = useSWR<ITransactions[]>(
+    `/api/transaction/get-transactions`,
+    fetcher,
+    {
+      revalidateOnFocus: false,
+    }
+  );
+  const formatted = transactions?.map((item) => ({
+    plan: item.plan.amount,
+    dueAmount: item.dueAmount,
+    operator: item.operator.name,
+    mobile: item.mobile,
+    createdAt: format(item.createdAt, "HH:mm - dd/MM/yyyy"),
+    id: item.id,
+  }));
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value);
     const query = e.target.value.trim().toLowerCase();
     if (query !== "") {
-      const filterdData = data.filter((item: any) =>
-        item?.mobile?.toLowerCase()?.includes(query),
+      
+      const filterdData = formatted?.filter((item) =>
+        item?.mobile?.toLowerCase()?.includes(query) || item.operator.toLowerCase().includes(query)
       );
+      
       dispatch(setTransactions(filterdData));
-    } else dispatch(setTransactions(data));
+    } else dispatch(setTransactions(formatted));
   };
 
   const handleClearSearch = () => {
     setQuery("");
-    dispatch(setTransactions(data));
+    dispatch(setTransactions(formatted));
   };
   return (
     <div

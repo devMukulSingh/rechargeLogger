@@ -34,6 +34,7 @@ export default function DataTable<TData, TValue>({
 }: IdataTableProps<TData, TValue>) {
   const [isMounted, setIsMounted] = useState(false);
   const { transactions } = useAppSelector((state) => state.rootSlice);
+  
   const { data } = useSWR(`/api/transaction/get-transactions`);
 
   const dispatch = useAppDispatch();
@@ -50,6 +51,7 @@ export default function DataTable<TData, TValue>({
     dispatch(setTransactions(formatted));
     setIsMounted(true);
   }, []);
+
   const table = useReactTable({
     data: transactions,
     columns,
@@ -61,18 +63,21 @@ export default function DataTable<TData, TValue>({
     <div className="md:w-3/4 w-full space-y-5">
       <div>
         <Table>
-          <TableHeader >
+          <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => {
               return (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => {
                     return (
-                      <TableHead key={header.id} className="text-neutral-100 font-semibold text-lg">
+                      <TableHead
+                        key={header.id}
+                        className="text-neutral-100 font-semibold text-lg"
+                      >
                         {header.isPlaceholder
                           ? null
                           : flexRender(
                               header.column.columnDef.header,
-                              header.getContext()
+                              header.getContext(),
                             )}
                       </TableHead>
                     );

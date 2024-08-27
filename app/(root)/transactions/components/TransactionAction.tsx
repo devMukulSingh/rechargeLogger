@@ -24,7 +24,6 @@ async function deleteTransaction(url: string, { arg }: { arg: string }) {
 }
 
 const TransactionAction = ({ data }: Props) => {
-  console.log(data, "Data");
 
   const router = useRouter();
   const [isOpen, setIsOpen] = useState<boolean>(false);

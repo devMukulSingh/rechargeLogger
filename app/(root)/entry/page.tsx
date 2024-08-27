@@ -4,16 +4,25 @@ import { rechargeSchema } from "@/lib/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import { useForm, UseFormReturn } from "react-hook-form";
-const MobileField = dynamic(() => import("./components/MobileField"));
-const OperatorField = dynamic(() => import("./components/OperatorField"));
-const DueAmountField = dynamic(() => import("./components/DueAmountField"));
-const PlanField = dynamic(() => import("./components/PlanField"));
+const MobileField = dynamic(() => import("./components/MobileField"),{
+  loading : () => <InputSkeleton/>
+});
+const OperatorField = dynamic(() => import("./components/OperatorField"), {
+  loading:  () =><InputSkeleton />,
+});
+const DueAmountField = dynamic(() => import("./components/DueAmountField"), {
+  loading:  () =><InputSkeleton />,
+});
+const PlanField = dynamic(() => import("./components/PlanField"), {
+  loading:  () =><InputSkeleton />,
+});
 import { Button } from "@/components/ui/button";
 import { z } from "zod";
 import axios from "axios";
 import useSWRMutation from "swr/mutation";
 import toast from "react-hot-toast";
 import dynamic from "next/dynamic";
+import InputSkeleton from "./components/InputSkeleton";
 
 export interface Iform {
   form: UseFormReturn<
@@ -73,7 +82,7 @@ const EntryPage = () => {
           <PlanField form={form} isMutating={isMutating} />
           <OperatorField form={form} isMutating={isMutating} />
           <DueAmountField form={form} isMutating={isMutating} />
-          <Button disabled={isMutating} className="col-span-2">
+          <Button disabled={isMutating} className="col-span-2 mt-auto">
             Submit
           </Button>
         </form>
