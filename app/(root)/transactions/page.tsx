@@ -10,8 +10,8 @@ import { format } from "date-fns";
 import { Operator, Plan, Transaction } from "@prisma/client";
 import dynamic from "next/dynamic";
 
-const TableSkeleton = dynamic(() => import("@/components/TableSkeleton"),{
-  ssr:false
+const TableSkeleton = dynamic(() => import("@/components/TableSkeleton"), {
+  ssr: false,
 });
 
 const DataTable = dynamic(
@@ -28,9 +28,13 @@ export interface ITransactions extends Transaction {
 
 const TransactionsPage = () => {
   const dispatch = useAppDispatch();
-  const { isLoading, data } = useSWR(`/api/transaction/get-transactions`,fetcher,{
-    revalidateOnFocus:false,
-  });
+  const { isLoading, data } = useSWR(
+    `/api/transaction/get-transactions`,
+    fetcher,
+    {
+      revalidateOnFocus: false,
+    },
+  );
   const formatted = data?.map((item: ITransactions) => ({
     plan: item.plan.amount,
     dueAmount: item.dueAmount,
@@ -43,7 +47,6 @@ const TransactionsPage = () => {
   // const tableData = await getTransactions() || [];
   return (
     <div className="flex flex-col gap-10 items-center justify-center p-5">
-
       <SearchBar tableData={formatted} />
       <DataTable columns={columns} />
     </div>

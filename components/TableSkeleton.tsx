@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { Skeleton } from "./ui/skeleton";
 
 const TableSkeleton = () => {
-
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
@@ -11,7 +10,7 @@ const TableSkeleton = () => {
   }, []);
 
   if (!isMounted) return null;
-  
+
   return (
     <>
       <Skeleton className="min-h-[200px] w-auto" />
