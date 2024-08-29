@@ -4,6 +4,7 @@ import {
   flexRender,
   getCoreRowModel,
   getPaginationRowModel,
+  getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
 import {
@@ -37,8 +38,8 @@ export default function DataTable<TData, TValue>({
   const [isMounted, setIsMounted] = useState(false);
   const { transactions } = useAppSelector((state) => state.rootSlice);
 
-  const { data } = useSWR(`/api/transaction/get-transactions`,fetcher,{
-    revalidateOnFocus:false
+  const { data } = useSWR(`/api/transaction/get-transactions`, fetcher, {
+    revalidateOnFocus: false,
   });
 
   const dispatch = useAppDispatch();
@@ -61,8 +62,10 @@ export default function DataTable<TData, TValue>({
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel:getSortedRowModel()
   });
   if (!isMounted) return null;
+  
   return (
     <div className="md:w-3/4 w-full space-y-5">
       <div>

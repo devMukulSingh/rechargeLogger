@@ -24,7 +24,7 @@ export default function RootLayout({
         <body className={inter.className}>
           <Providers>
             <CacheProviders>
-              <Toaster />
+              <Toaster position="bottom-right"/>
               {children}
             </CacheProviders>
           </Providers>

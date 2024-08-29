@@ -17,7 +17,9 @@ export function SearchBar({}: SearchBarProps) {
   const [query, setQuery] = useState("");
   const dispatch = useAppDispatch();
 
-  const { isLoading, data: transactions } = useSWR<ITransactions[]>(`/api/transaction/get-transactions`,);
+  const { isLoading, data: transactions } = useSWR<ITransactions[]>(
+    `/api/transaction/get-transactions`,
+  );
   const formatted = transactions?.map((item) => ({
     plan: item.plan.amount,
     dueAmount: item.dueAmount,

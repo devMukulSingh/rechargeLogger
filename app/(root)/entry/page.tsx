@@ -1,9 +1,4 @@
 "use client";
-import { Form } from "@/components/ui/form";
-import { rechargeSchema } from "@/lib/schema";
-import { zodResolver } from "@hookform/resolvers/zod";
-import React from "react";
-import { useForm, UseFormReturn } from "react-hook-form";
 const MobileField = dynamic(() => import("./components/MobileField"), {
   loading: () => <InputSkeleton />,
 });
@@ -16,6 +11,11 @@ const DueAmountField = dynamic(() => import("./components/DueAmountField"), {
 const PlanField = dynamic(() => import("./components/PlanField"), {
   loading: () => <InputSkeleton />,
 });
+import { Form } from "@/components/ui/form";
+import { rechargeSchema } from "@/lib/schema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import React from "react";
+import { useForm, UseFormReturn } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { z } from "zod";
 import axios from "axios";
@@ -23,6 +23,7 @@ import useSWRMutation from "swr/mutation";
 import toast from "react-hot-toast";
 import dynamic from "next/dynamic";
 import InputSkeleton from "./components/InputSkeleton";
+import { useRouter } from "next/navigation";
 
 export interface Iform {
   form: UseFormReturn<
@@ -45,6 +46,7 @@ async function sendRequest(url: string, { arg }: { arg: formFields }) {
 type formFields = z.infer<typeof rechargeSchema>;
 
 const EntryPage = () => {
+const router = useRouter();
   const { data, isMutating, trigger } = useSWRMutation(
     `/api/transaction/add-transaction`,
     sendRequest,
@@ -56,6 +58,7 @@ const EntryPage = () => {
       onSuccess() {
         toast.success("Transaction added");
         form.reset({ dueAmount: 0, operator: "airtel", plan: 299, mobile: 0 });
+        router.refresh();
       },
     },
   );
