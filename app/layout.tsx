@@ -19,12 +19,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider>
+    <ClerkProvider >
       <html lang="en">
         <body className={inter.className}>
           <Providers>
             <CacheProviders>
-              <Toaster position="bottom-right"/>
+              <Toaster position="bottom-right" />
               {children}
             </CacheProviders>
           </Providers>

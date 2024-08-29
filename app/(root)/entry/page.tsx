@@ -24,6 +24,7 @@ import toast from "react-hot-toast";
 import dynamic from "next/dynamic";
 import InputSkeleton from "./components/InputSkeleton";
 import { useRouter } from "next/navigation";
+import { revalidateEvents } from "swr/_internal";
 
 export interface Iform {
   form: UseFormReturn<
@@ -46,7 +47,7 @@ async function sendRequest(url: string, { arg }: { arg: formFields }) {
 type formFields = z.infer<typeof rechargeSchema>;
 
 const EntryPage = () => {
-const router = useRouter();
+  const router = useRouter();
   const { data, isMutating, trigger } = useSWRMutation(
     `/api/transaction/add-transaction`,
     sendRequest,
@@ -58,7 +59,7 @@ const router = useRouter();
       onSuccess() {
         toast.success("Transaction added");
         form.reset({ dueAmount: 0, operator: "airtel", plan: 299, mobile: 0 });
-        router.refresh();
+        
       },
     },
   );

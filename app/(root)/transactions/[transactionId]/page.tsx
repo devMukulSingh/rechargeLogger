@@ -15,7 +15,7 @@ const MobileField = dynamic(
   () => import("../../entry/components/MobileField"),
   {
     loading: () => <InputSkeleton />,
-  }
+  },
 );
 const PlanField = dynamic(() => import("../../entry/components/PlanField"), {
   loading: () => <InputSkeleton />,
@@ -24,13 +24,13 @@ const OperatorField = dynamic(
   () => import("../../entry/components/OperatorField"),
   {
     loading: () => <InputSkeleton />,
-  }
+  },
 );
 const DueAmountField = dynamic(
   () => import("../../entry/components/DueAmountField"),
   {
     loading: () => <InputSkeleton />,
-  }
+  },
 );
 import useSWR from "swr";
 import { TransactionColumn } from "../components/TransactionColumn";
@@ -81,11 +81,11 @@ const TramsactionEditPage = () => {
         toast.success("Transaction updated");
         router.push(`/transactions`);
       },
-    }
+    },
   );
 
   const transaction = transactions?.find(
-    (tran: TransactionColumn) => tran.id === transactionId
+    (tran: TransactionColumn) => tran.id === transactionId,
   );
   const formatted = {
     plan: transaction?.plan.amount,

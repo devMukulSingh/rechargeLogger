@@ -26,6 +26,7 @@ import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
 import TableSkeleton from "@/components/TableSkeleton";
 import { fetcher } from "@/lib/utils";
+import useSWRMutation from "swr/mutation";
 
 interface IdataTableProps<TData, TValue> {
   columns: ColumnDef<TransactionColumn, TValue>[];
@@ -37,7 +38,6 @@ export default function DataTable<TData, TValue>({
 }: IdataTableProps<TData, TValue>) {
   const [isMounted, setIsMounted] = useState(false);
   const { transactions } = useAppSelector((state) => state.rootSlice);
-
   const { data } = useSWR(`/api/transaction/get-transactions`, fetcher, {
     revalidateOnFocus: false,
   });
@@ -62,10 +62,10 @@ export default function DataTable<TData, TValue>({
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel:getSortedRowModel()
+    getSortedRowModel: getSortedRowModel(),
   });
   if (!isMounted) return null;
-  
+
   return (
     <div className="md:w-3/4 w-full space-y-5">
       <div>
