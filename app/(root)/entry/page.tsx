@@ -40,7 +40,7 @@ export interface Iform {
   isMutating: boolean;
 }
 
-async function sendRequest(url: string, { arg }: { arg: formFields }) {
+export async function addTransactionReq(url: string, { arg }: { arg: formFields }) {
   return await axios.post(url, arg);
 }
 
@@ -50,7 +50,7 @@ const EntryPage = () => {
   const router = useRouter();
   const { data, isMutating, trigger } = useSWRMutation(
     `/api/transaction/add-transaction`,
-    sendRequest,
+    addTransactionReq,
     {
       onError(e) {
         console.log(`Error in /api/transaction/add-transaction`, e);
@@ -59,7 +59,7 @@ const EntryPage = () => {
       onSuccess() {
         toast.success("Transaction added");
         form.reset({ dueAmount: 0, operator: "airtel", plan: 299, mobile: 0 });
-        
+        router.refresh();
       },
     },
   );

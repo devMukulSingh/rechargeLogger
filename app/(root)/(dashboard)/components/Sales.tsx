@@ -11,7 +11,7 @@ const Sales: FC<SalesProps> = ({ selectedMonthTransactions = 0 }) => {
     <>
       <Card>
         <CardHeader className="flex flex-row gap-3 items-center">
-          Sales
+          Transactions
           <CreditCard className="ml-auto" />
         </CardHeader>
         <CardContent className="mt-auto text-2xl font-semibold">

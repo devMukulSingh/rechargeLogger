@@ -31,7 +31,7 @@ const ChartSection: React.FC<ChartSectionProps> = async ({}) => {
       { name: "Dec", total: 0 },
     ];
 
-    let i = 1;
+    let i = 0;
     if (transactions) {
       // console.log(transactions);
 

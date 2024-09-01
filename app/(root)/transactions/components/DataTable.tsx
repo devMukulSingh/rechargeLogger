@@ -27,23 +27,33 @@ import { Button } from "@/components/ui/button";
 import TableSkeleton from "@/components/TableSkeleton";
 import { fetcher } from "@/lib/utils";
 import useSWRMutation from "swr/mutation";
+import { addTransactionReq } from "../../entry/page";
+import axios from "axios";
 
 interface IdataTableProps<TData, TValue> {
   columns: ColumnDef<TransactionColumn, TValue>[];
   // data: TData[];
 }
 
+
 export default function DataTable<TData, TValue>({
   columns,
 }: IdataTableProps<TData, TValue>) {
   const [isMounted, setIsMounted] = useState(false);
   const { transactions } = useAppSelector((state) => state.rootSlice);
-  const { data } = useSWR(`/api/transaction/get-transactions`, fetcher, {
-    revalidateOnFocus: false,
-  });
-
+    
+  const { data } = useSWR(
+    `/api/transaction/get-transactions`,
+    fetcher,
+    {
+      revalidateOnFocus:false
+    }
+  );
+  
   const dispatch = useAppDispatch();
-
+  // useEffect( () => {
+  //   setIs
+  // },[])
   useEffect(() => {
     const formatted = data?.map((item: ITransactions) => ({
       plan: item.plan.amount,
@@ -54,8 +64,7 @@ export default function DataTable<TData, TValue>({
       id: item.id,
     }));
     dispatch(setTransactions(formatted));
-    setIsMounted(true);
-  }, []);
+  }, [data]);
 
   const table = useReactTable({
     data: transactions,
@@ -64,7 +73,7 @@ export default function DataTable<TData, TValue>({
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
   });
-  if (!isMounted) return null;
+  // if (!isMounted) return null;
 
   return (
     <div className="md:w-3/4 w-full space-y-5">
