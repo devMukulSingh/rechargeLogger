@@ -27,7 +27,6 @@ import { Button } from "@/components/ui/button";
 import TableSkeleton from "@/components/TableSkeleton";
 import { fetcher } from "@/lib/utils";
 import useSWRMutation from "swr/mutation";
-import { addTransactionReq } from "../../entry/page";
 import axios from "axios";
 
 interface IdataTableProps<TData, TValue> {
@@ -35,21 +34,16 @@ interface IdataTableProps<TData, TValue> {
   // data: TData[];
 }
 
-
 export default function DataTable<TData, TValue>({
   columns,
 }: IdataTableProps<TData, TValue>) {
   const [isMounted, setIsMounted] = useState(false);
   const { transactions } = useAppSelector((state) => state.rootSlice);
-    
-  const { data } = useSWR(
-    `/api/transaction/get-transactions`,
-    fetcher,
-    {
-      revalidateOnFocus:false
-    }
-  );
-  
+
+  const { data } = useSWR(`/api/transaction/get-transactions`, fetcher, {
+    revalidateOnFocus: false,
+  });
+
   const dispatch = useAppDispatch();
   // useEffect( () => {
   //   setIs
