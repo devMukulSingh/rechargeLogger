@@ -1,5 +1,5 @@
 "use client";
-import { FC, lazy, Suspense, useState } from "react";
+import { FC, lazy, Suspense, useEffect, useState } from "react";
 import {
   Select,
   SelectContent,
@@ -10,63 +10,44 @@ import {
 import useSWR from "swr";
 import { fetcher, months } from "@/lib/utils";
 import CardSkeleton from "./CardSkeleton";
-import dynamic from "next/dynamic";
 import { ITransactions } from "../../transactions/page";
+import { useAppDispatch } from "@/redux/hooks";
+import {
+  setSelectedMonthRevenue,
+  setSelectedMonthTransactions,
+} from "@/redux/reducers/persistedReducer";
 
 const TotalRevenue = lazy(
-  () => import("@/app/(root)/(dashboard)/components/TotalRevenue"),
+  () => import("@/app/(root)/(dashboard)/components/TotalRevenue")
 );
 const Sales = lazy(() => import("@/app/(root)/(dashboard)/components/Sales"));
 
 interface DashboardDataProps {}
 
 const DashboardData: FC<DashboardDataProps> = () => {
+  const dispatch = useAppDispatch();
   const currentMonth = new Date().getMonth().toString();
 
-  const [selectedMonthTransactions, setSelectedMonthTransactions] =
-    useState<number>(0);
-  const [selectedMonthRevenue, setSelectedMonthRevenue] = useState<number>(0);
+  const { data } = useSWR<ITransactions[]>(`/api/transaction/get-transactions`);
 
   const { data: transactions, isLoading } = useSWR<ITransactions[]>(
-    `/api/transaction/get-transactions`,
+    !data ? `/api/transaction/get-transactions` : null,
     fetcher,
     {
       revalidateOnFocus: false,
       onError(err) {
         console.log(`Error in getTransactions`, err);
       },
-      onSuccess(data) {
-        //setting currentmonth transactions in state
-        const currMonthTransactions =
-          data
-            ?.filter(
-              (tran) =>
-                new Date(tran.createdAt).getMonth() === Number(currentMonth),
-            )
-            .flat() || [];
-        setSelectedMonthTransactions(currMonthTransactions?.length);
-        console.log(currMonthTransactions, "currMonthTransactions");
-
-        //setting selected month revenue in state
-        if (currMonthTransactions.length > 0) {
-          const filteredRevenue =
-            currMonthTransactions
-              .map((tran) => tran.plan.amount)
-              .reduce((acc: number, curr: number) => acc + curr, 0) || 0;
-          setSelectedMonthRevenue(filteredRevenue);
-          console.log(filteredRevenue, "filteredRevenue");
-        }
-      },
-    },
+    }
   );
 
   //handling month change eveent
   const handleMonthChange = (selectedMonth: string) => {
     const currMonthTransactions =
-      transactions?.filter(
-        (tran) => new Date(tran.createdAt).getMonth() === Number(selectedMonth),
+      (data || transactions)?.filter(
+        (tran) => new Date(tran.createdAt).getMonth() === Number(selectedMonth)
       ) || [];
-    setSelectedMonthTransactions(currMonthTransactions.length);
+    dispatch(setSelectedMonthTransactions(currMonthTransactions.length));
 
     if (currMonthTransactions.length > 0) {
       const filteredRevenue =
@@ -74,10 +55,27 @@ const DashboardData: FC<DashboardDataProps> = () => {
           .map((tran) => tran.plan.amount)
           .flat()
           .reduce((acc: number, curr: number) => acc + curr, 0) || 0;
-      setSelectedMonthRevenue(filteredRevenue);
-    } else setSelectedMonthRevenue(0);
+      dispatch(setSelectedMonthRevenue(filteredRevenue));
+    } else dispatch(setSelectedMonthRevenue(0));
   };
+  useEffect(() => {
+    //setting currentmonth transactions in state
+    const currMonthTransactions =
+      (data || transactions)?.filter(
+        (tran) => new Date(tran.createdAt).getMonth() === Number(currentMonth)
+      ) || [];
+    dispatch(setSelectedMonthTransactions(currMonthTransactions?.length));
 
+    //setting selected month revenue in state
+    if (currMonthTransactions.length > 0) {
+      const filteredRevenue =
+        currMonthTransactions
+          .map((tran) => tran.plan.amount)
+          .reduce((acc: number, curr: number) => acc + curr, 0) || 0;
+      dispatch(setSelectedMonthRevenue(filteredRevenue));
+      console.log(filteredRevenue, "filteredRevenue");
+    }
+  }, [data, transactions]);
   ///////////////////////////////////////////////
   return (
     <div className="flex flex-col gap-5">
@@ -99,10 +97,10 @@ const DashboardData: FC<DashboardDataProps> = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-4 md:grid-cols-3 gap-3">
         <Suspense fallback={<CardSkeleton />}>
-          <TotalRevenue selectedMonthRevenue={selectedMonthRevenue} />
+          <TotalRevenue />
         </Suspense>
         <Suspense fallback={<CardSkeleton />}>
-          <Sales selectedMonthTransactions={selectedMonthTransactions} />
+          <Sales />
         </Suspense>
       </div>
     </div>

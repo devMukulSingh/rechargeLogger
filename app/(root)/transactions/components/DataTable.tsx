@@ -18,7 +18,7 @@ import {
 import { Suspense, useCallback, useEffect, useState } from "react";
 
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { setTransactions } from "@/redux/slice";
+import { setTransactions } from "@/redux/reducers/persistedReducer";
 import { TransactionColumn } from "@/app/(root)/transactions/components/TransactionColumn";
 import useSWR from "swr";
 import { ITransactions } from "@/app/(root)/transactions/page";

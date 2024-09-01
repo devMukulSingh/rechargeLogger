@@ -1,13 +1,15 @@
 import dynamic from "next/dynamic";
 import ChartSkeleton from "./components/ChartSkeleton";
 import DashboardDataSkeleton from "./components/DashboardDataSkeleton";
-import DashboardData from "./components/DashboardData";
+import { lazy, Suspense } from "react";
+const DashboardData = dynamic( () => import("./components/DashboardData"),{ssr:false})
 const ChartSection = dynamic(
   () => import("@/app/(root)/(dashboard)/components/ChartSection"),
   {
     loading: () => <ChartSkeleton />,
   },
 );
+// const DashboardData = lazy( () => import("./components/DashboardData"));
 // const DashboardData = dynamic(
 //   () => import("@/app/(root)/(dashboard)/components/DashboardData"),
 //   {
@@ -23,7 +25,9 @@ const DashboardPage = async () => {
         <h1>Manage Dashboard</h1>
       </header>
       {/* <DashboardDataSkeleton/> */}
-      <DashboardData />
+      {/* <Suspense fallback={<>loading...</>}> */}
+        <DashboardData />
+      {/* </Suspense> */}
       <ChartSection />
     </div>
   );

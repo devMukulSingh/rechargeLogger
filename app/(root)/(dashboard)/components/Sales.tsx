@@ -1,12 +1,16 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { useAppSelector } from "@/redux/hooks";
 import { CreditCard, DollarSign } from "lucide-react";
 import { FC } from "react";
 
 interface SalesProps {
-  selectedMonthTransactions: number;
 }
 
-const Sales: FC<SalesProps> = ({ selectedMonthTransactions = 0 }) => {
+const Sales: FC<SalesProps> = ({  }) => {
+  const { selectedMonthTransactions } = useAppSelector(
+    (state) => state.rootSlice
+  );
+
   return (
     <>
       <Card>

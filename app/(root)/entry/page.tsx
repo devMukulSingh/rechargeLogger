@@ -24,7 +24,7 @@ import toast from "react-hot-toast";
 import dynamic from "next/dynamic";
 import InputSkeleton from "./components/InputSkeleton";
 import { useRouter } from "next/navigation";
-import { revalidateEvents } from "swr/_internal";
+import { revalidateEvents, useSWRConfig } from "swr/_internal";
 
 export interface Iform {
   form: UseFormReturn<
@@ -40,16 +40,15 @@ export interface Iform {
   isMutating: boolean;
 }
 
-async function sendRequest(
-  url: string,
-  { arg }: { arg: formFields },
-) {
+async function sendRequest(url: string, { arg }: { arg: formFields }) {
   return await axios.post(url, arg);
 }
 
 type formFields = z.infer<typeof rechargeSchema>;
 
 const EntryPage = () => {
+  const { mutate } = useSWRConfig();
+
   const router = useRouter();
   const { data, isMutating, trigger } = useSWRMutation(
     `/api/transaction/add-transaction`,
@@ -62,9 +61,13 @@ const EntryPage = () => {
       onSuccess() {
         toast.success("Transaction added");
         form.reset({ dueAmount: 0, operator: "airtel", plan: 299, mobile: 0 });
-        router.refresh();
+        mutate(
+          (key) => true, // which cache keys are updated
+          undefined, // update cache data to `undefined`
+          { revalidate: false } // do not revalidate
+        );
       },
-    },
+    }
   );
   const form = useForm<formFields>({
     resolver: zodResolver(rechargeSchema),

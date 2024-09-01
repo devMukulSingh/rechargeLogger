@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { fetcher } from "@/lib/utils";
 import useSWR from "swr";
 import { useAppDispatch } from "@/redux/hooks";
-import { setTransactions } from "@/redux/slice";
+import { setTransactions } from "@/redux/reducers/persistedReducer";
 import { format } from "date-fns";
 import { ITransactions } from "../page";
 
