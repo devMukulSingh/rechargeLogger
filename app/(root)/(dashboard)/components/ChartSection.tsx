@@ -36,7 +36,6 @@ const ChartSection: React.FC<ChartSectionProps> = async ({}) => {
       // console.log(transactions);
 
       for (let obj of graphData) {
-
         let totalMonthlyRevenue = 0;
         //getting totalRevenue of a particular month
         totalMonthlyRevenue = transactions

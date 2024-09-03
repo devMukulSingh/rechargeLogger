@@ -64,10 +64,10 @@ const EntryPage = () => {
         mutate(
           (key) => true, // which cache keys are updated
           undefined, // update cache data to `undefined`
-          { revalidate: false } // do not revalidate
+          { revalidate: false }, // do not revalidate
         );
       },
-    }
+    },
   );
   const form = useForm<formFields>({
     resolver: zodResolver(rechargeSchema),

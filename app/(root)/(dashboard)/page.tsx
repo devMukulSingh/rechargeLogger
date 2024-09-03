@@ -2,7 +2,9 @@ import dynamic from "next/dynamic";
 import ChartSkeleton from "./components/ChartSkeleton";
 import DashboardDataSkeleton from "./components/DashboardDataSkeleton";
 import { lazy, Suspense } from "react";
-const DashboardData = dynamic( () => import("./components/DashboardData"),{ssr:false})
+const DashboardData = dynamic(() => import("./components/DashboardData"), {
+  ssr: false,
+});
 const ChartSection = dynamic(
   () => import("@/app/(root)/(dashboard)/components/ChartSection"),
   {
@@ -26,7 +28,7 @@ const DashboardPage = async () => {
       </header>
       {/* <DashboardDataSkeleton/> */}
       {/* <Suspense fallback={<>loading...</>}> */}
-        <DashboardData />
+      <DashboardData />
       {/* </Suspense> */}
       <ChartSection />
     </div>

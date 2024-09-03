@@ -2,27 +2,31 @@ import { IinitialState } from "@/lib/types";
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState: IinitialState = {
-    transactions: [],
-    selectedMonthTransactions:0,
-    selectedMonthRevenue:0
+  transactions: [],
+  selectedMonthTransactions: 0,
+  selectedMonthRevenue: 0,
 };
 
 const rootSlice = createSlice({
-    initialState,
-    name: "persistedReducer",
-    reducers: {
-        setTransactions: (state, action) => {
-            state.transactions = action.payload;
-        },
-        setSelectedMonthTransactions : (state,action) => {
-            state.selectedMonthTransactions = action.payload;
-        },
-        setSelectedMonthRevenue: (state, action) => {
-            state.selectedMonthRevenue = action.payload;
-        }
+  initialState,
+  name: "persistedReducer",
+  reducers: {
+    setTransactions: (state, action) => {
+      state.transactions = action.payload;
     },
+    setSelectedMonthTransactions: (state, action) => {
+      state.selectedMonthTransactions = action.payload;
+    },
+    setSelectedMonthRevenue: (state, action) => {
+      state.selectedMonthRevenue = action.payload;
+    },
+  },
 });
 
 export default rootSlice.reducer;
 
-export const { setTransactions, setSelectedMonthTransactions,setSelectedMonthRevenue } = rootSlice.actions;
+export const {
+  setTransactions,
+  setSelectedMonthTransactions,
+  setSelectedMonthRevenue,
+} = rootSlice.actions;

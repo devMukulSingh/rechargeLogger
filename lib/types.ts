@@ -3,8 +3,8 @@ import { Transaction } from "@prisma/client";
 
 export interface IinitialState {
   transactions: TransactionColumn[];
-  selectedMonthTransactions:number;
-  selectedMonthRevenue:number
+  selectedMonthTransactions: number;
+  selectedMonthRevenue: number;
 }
 
 export interface ITransactions {

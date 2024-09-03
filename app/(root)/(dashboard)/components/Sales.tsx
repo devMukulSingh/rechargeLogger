@@ -3,12 +3,11 @@ import { useAppSelector } from "@/redux/hooks";
 import { CreditCard, DollarSign } from "lucide-react";
 import { FC } from "react";
 
-interface SalesProps {
-}
+interface SalesProps {}
 
-const Sales: FC<SalesProps> = ({  }) => {
+const Sales: FC<SalesProps> = ({}) => {
   const { selectedMonthTransactions } = useAppSelector(
-    (state) => state.rootSlice
+    (state) => state.rootSlice,
   );
 
   return (
