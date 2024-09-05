@@ -25,6 +25,7 @@ const Navlinks = () => {
     <div className="flex gap-10 ">
       {navlinks.map((link, index) => (
         <Link
+          prefetch={true}
           href={link.value}
           key={index}
           className={`text-lg hover:scale-110 transition-all ${link.isActive ? "font-bold scale-110 underline" : ""}`}

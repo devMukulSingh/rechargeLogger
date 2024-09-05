@@ -3,8 +3,10 @@ import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
+  getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
+  SortingState,
   useReactTable,
 } from "@tanstack/react-table";
 import {
@@ -37,7 +39,7 @@ interface IdataTableProps<TData, TValue> {
 export default function DataTable<TData, TValue>({
   columns,
 }: IdataTableProps<TData, TValue>) {
-  const [isMounted, setIsMounted] = useState(false);
+  const [sorting, setSorting] = useState<SortingState>([]);
   const { transactions } = useAppSelector((state) => state.rootSlice);
 
   const { data } = useSWR(`/api/transaction/get-transactions`, fetcher, {
@@ -66,6 +68,8 @@ export default function DataTable<TData, TValue>({
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    enableSorting: true,
   });
   // if (!isMounted) return null;
 
@@ -74,27 +78,56 @@ export default function DataTable<TData, TValue>({
       <div>
         <Table>
           <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => {
-              return (
-                <TableRow key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => {
-                    return (
-                      <TableHead
-                        key={header.id}
-                        className="text-neutral-100 font-semibold text-lg"
-                      >
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => {
+                  return (
+                    <TableHead
+                      key={header.id}
+                      colSpan={header.colSpan}
+                      className="text-neutral-200 text-lg font-medium"
+                    >
+                      {header.isPlaceholder ? null : (
+                        <>
+                          <div
+                            className={
+                              header.column.getCanSort()
+                                ? "cursor-pointer select-none"
+                                : ""
+                            }
+                            onClick={header.column.getToggleSortingHandler()}
+                            title={
+                              header.column.getCanSort()
+                                ? header.column.getNextSortingOrder() === "asc"
+                                  ? "Sort ascending"
+                                  : header.column.getNextSortingOrder() ===
+                                      "desc"
+                                    ? "Sort descending"
+                                    : "Clear sort"
+                                : undefined
+                            }
+                          >
+                            {flexRender(
                               header.column.columnDef.header,
-                              header.getContext(),
+                              header.getContext()
                             )}
-                      </TableHead>
-                    );
-                  })}
-                </TableRow>
-              );
-            })}
+                            {{
+                              asc: " 🔼",
+                              desc: " 🔽",
+                            }[header.column.getIsSorted() as string] ?? null}
+                          </div>
+                          {/* {header.column.getCanFilter() ? (
+                            <div>
+                              <Filter column={header.column} />
+                            </div>
+                          ) : null} */}
+                        </>
+                      )}
+                    </TableHead>
+                  );
+                })}
+              </TableRow>
+            ))}
           </TableHeader>
 
           <Suspense fallback={<TableSkeleton />}>
@@ -109,7 +142,7 @@ export default function DataTable<TData, TValue>({
                       <TableCell key={cell.id}>
                         {flexRender(
                           cell.column.columnDef.cell,
-                          cell.getContext(),
+                          cell.getContext()
                         )}
                       </TableCell>
                     ))}

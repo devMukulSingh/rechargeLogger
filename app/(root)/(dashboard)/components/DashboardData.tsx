@@ -21,7 +21,7 @@ import { addDays, format } from "date-fns";
 import { DateRange } from "react-day-picker";
 
 const TotalRevenue = lazy(
-  () => import("@/app/(root)/(dashboard)/components/TotalRevenue")
+  () => import("@/app/(root)/(dashboard)/components/TotalRevenue"),
 );
 const Sales = lazy(() => import("@/app/(root)/(dashboard)/components/Sales"));
 
@@ -48,7 +48,7 @@ const DashboardData: FC<DashboardDataProps> = () => {
       onError(err) {
         console.log(`Error in getTransactions`, err);
       },
-    }
+    },
   );
 
   //handling month change eveent
@@ -70,10 +70,7 @@ const DashboardData: FC<DashboardDataProps> = () => {
       selectedDateTransactions =
         (data || transactions)?.filter((tran) => {
           const createdAt = new Date(tran.createdAt).setHours(0, 0, 0, 0);
-          if (
-            createdAt === from ||
-            createdAt === to
-          ) {
+          if (createdAt === from || createdAt === to) {
             return tran;
           }
         }) || [];
@@ -93,7 +90,7 @@ const DashboardData: FC<DashboardDataProps> = () => {
     //setting currentmonth transactions in state
     const currMonthTransactions =
       (data || transactions)?.filter(
-        (tran) => new Date(tran.createdAt).getMonth() === Number(currentMonth)
+        (tran) => new Date(tran.createdAt).getMonth() === Number(currentMonth),
       ) || [];
     dispatch(setSelectedMonthTransactions(currMonthTransactions?.length));
 
@@ -116,7 +113,7 @@ const DashboardData: FC<DashboardDataProps> = () => {
             variant={"outline"}
             className={cn(
               "w-[300px] justify-start text-left font-normal",
-              !selectedDateRange && "text-muted-foreground"
+              !selectedDateRange && "text-muted-foreground",
             )}
           >
             <CalendarIcon className="mr-2 h-4 w-4" />
