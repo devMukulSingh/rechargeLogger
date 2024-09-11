@@ -19,6 +19,7 @@ const MobileField = ({ form, isMutating }: Iform) => {
             <FormLabel>Mobile</FormLabel>
             <FormControl>
               <Input
+                autoFocus
                 placeholder="9808273072"
                 {...field}
                 className="text-black"
