@@ -7,8 +7,14 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Iform } from "../page";
+import { useEffect, useRef, useState } from "react";
+
 
 const MobileField = ({ form, isMutating }: Iform) => {
+  const inputRef = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    if (inputRef.current) inputRef.current.focus();
+  }, []);
   return (
     <>
       <FormField
@@ -19,9 +25,9 @@ const MobileField = ({ form, isMutating }: Iform) => {
             <FormLabel>Mobile</FormLabel>
             <FormControl>
               <Input
-                autoFocus
                 placeholder="9808273072"
                 {...field}
+                ref={inputRef}
                 className="text-black"
                 disabled={isMutating}
               />

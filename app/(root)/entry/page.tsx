@@ -14,7 +14,7 @@ const PlanField = dynamic(() => import("./components/PlanField"), {
 import { Form } from "@/components/ui/form";
 import { rechargeSchema } from "@/lib/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useForm, UseFormReturn } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { z } from "zod";
@@ -64,10 +64,10 @@ const EntryPage = () => {
         mutate(
           (key) => true, // which cache keys are updated
           undefined, // update cache data to `undefined`
-          { revalidate: false }, // do not revalidate
+          { revalidate: false } // do not revalidate
         );
       },
-    },
+    }
   );
   const form = useForm<formFields>({
     resolver: zodResolver(rechargeSchema),
@@ -81,6 +81,7 @@ const EntryPage = () => {
   const onSubmit = async (data: formFields) => {
     await trigger(data);
   };
+
   return (
     <div className="flex items-center justify-center h-full py-10">
       <Form {...form}>
@@ -88,7 +89,10 @@ const EntryPage = () => {
           onSubmit={form.handleSubmit(onSubmit)}
           className="grid grid-cols-2 gap-5 border py-5 px-10 rounded-md shadow-xl w-[35rem] h-[17rem]"
         >
-          <MobileField form={form} isMutating={isMutating} />
+          <MobileField
+            form={form}
+            isMutating={isMutating}
+          />
           <PlanField form={form} isMutating={isMutating} />
           <OperatorField form={form} isMutating={isMutating} />
           <DueAmountField form={form} isMutating={isMutating} />
