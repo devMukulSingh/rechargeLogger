@@ -64,10 +64,10 @@ const EntryPage = () => {
         mutate(
           (key) => true, // which cache keys are updated
           undefined, // update cache data to `undefined`
-          { revalidate: false } // do not revalidate
+          { revalidate: false }, // do not revalidate
         );
       },
-    }
+    },
   );
   const form = useForm<formFields>({
     resolver: zodResolver(rechargeSchema),
@@ -89,10 +89,7 @@ const EntryPage = () => {
           onSubmit={form.handleSubmit(onSubmit)}
           className="grid grid-cols-2 gap-5 border py-5 px-10 rounded-md shadow-xl w-[35rem] h-[17rem]"
         >
-          <MobileField
-            form={form}
-            isMutating={isMutating}
-          />
+          <MobileField form={form} isMutating={isMutating} />
           <PlanField form={form} isMutating={isMutating} />
           <OperatorField form={form} isMutating={isMutating} />
           <DueAmountField form={form} isMutating={isMutating} />

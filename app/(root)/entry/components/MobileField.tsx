@@ -9,9 +9,8 @@ import { Input } from "@/components/ui/input";
 import { Iform } from "../page";
 import { useEffect, useRef, useState } from "react";
 
-
 const MobileField = ({ form, isMutating }: Iform) => {
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
   useEffect(() => {
     if (inputRef.current) inputRef.current.focus();
   }, []);
