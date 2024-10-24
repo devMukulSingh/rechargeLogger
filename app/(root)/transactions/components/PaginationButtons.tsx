@@ -20,6 +20,12 @@ const PaginationButtons = ({ totalPages }: Props) => {
     addSearchParams({ page: page - 1 });
     mutate((key) => true, undefined, { revalidate: false });
   };
+  const arr = Array
+  .from({length:totalPages},(v,index) => index+1 )
+  .slice( (page+2 > totalPages && page!=1 ) ? page-3 : page<2 ? page-1 : page-2 ,(page+2  < totalPages) ? page+2 : totalPages);
+
+  console.log(arr,"arr");
+  
   return (
     <>
       <footer className="flex gap-5  mt-auto  self-center items-center text-black">
@@ -31,13 +37,13 @@ const PaginationButtons = ({ totalPages }: Props) => {
         >
           Previous
         </Button>
-        {Array.from({ length: totalPages }).map((_: any, index: number) => (
+        {arr.map((paginationPage: number, index: number) => (
           <div
-            className={`cursor-pointer flex items-center justify-center ${index + 1 === page ? `bg-white h-8 w-8 rounded-full ` : ``} `}
+            className={`cursor-pointer flex items-center justify-center ${paginationPage === page ? `bg-white h-8 w-8 rounded-full ` : ``} `}
             key={index}
-            onClick={() => addSearchParams({ page: index + 1 })}
+            onClick={() => addSearchParams({ page: paginationPage })}
           >
-            {index + 1}
+            {paginationPage}
           </div>
         ))}
         ...

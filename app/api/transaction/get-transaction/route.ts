@@ -7,8 +7,8 @@ export async function GET(req: NextRequest, res: NextResponse) {
   try {
     const { userId } = auth();
     const mobile = req.nextUrl.searchParams.get("mobile");
-    const pageIndex = req.nextUrl.searchParams.get('pageIndex')
-    const pageSize = req.nextUrl.searchParams.get('pageSize')
+    const pageIndex = req.nextUrl.searchParams.get("pageIndex");
+    const pageSize = req.nextUrl.searchParams.get("pageSize");
 
     if (!userId)
       return NextResponse.json(
@@ -41,7 +41,6 @@ export async function GET(req: NextRequest, res: NextResponse) {
         { status: 400 },
       );
 
-
     const transactions = await prisma.transaction.findMany({
       where: {
         userId,
@@ -59,15 +58,15 @@ export async function GET(req: NextRequest, res: NextResponse) {
           },
         },
       },
-      skip: ( Number(pageIndex) * Number(pageSize) ),
-      take: Number(pageSize)
+      skip: Number(pageIndex) * Number(pageSize),
+      take: Number(pageSize),
     });
     const totalTransactions = await prisma.transaction.count({
-      where:{
+      where: {
         userId,
-        mobile
-      }
-    })
+        mobile,
+      },
+    });
     const formattedTransaction = transactions.map((transaction, index) => ({
       plan: transaction.plan.amount,
       dueAmount: transaction.dueAmount,
@@ -76,9 +75,9 @@ export async function GET(req: NextRequest, res: NextResponse) {
       createdAt: format(transaction.createdAt, "HH:mm - dd/MM/yyyy"),
       id: transaction.id,
     }));
-    const totalPages = Math.ceil(totalTransactions/Number(pageSize));
+    const totalPages = Math.ceil(totalTransactions / Number(pageSize));
     return NextResponse.json(
-      { transactions: formattedTransaction,totalPages },
+      { transactions: formattedTransaction, totalPages },
       { status: 200 },
     );
   } catch (e) {

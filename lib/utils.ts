@@ -11,7 +11,7 @@ export const fetcher = ({
   args,
 }: {
   url: string;
-  args: { pageIndex: number; pageSize: number,mobile:string | null };
+  args: { pageIndex: number; pageSize: number; mobile: string | null };
 }) =>
   axios
     .get(url, {

@@ -39,7 +39,7 @@ export default function DataTable<TData, TValue>({
       url: query
         ? `/api/transaction/get-transaction`
         : `/api/transaction/get-transactions`,
-      args: { pageIndex: page - 1, pageSize, mobile:query },
+      args: { pageIndex: page - 1, pageSize, mobile: query },
     },
     fetcher,
     {
@@ -50,11 +50,11 @@ export default function DataTable<TData, TValue>({
       },
       keepPreviousData: true,
       revalidateOnFocus: false,
-    }
+    },
   );
 
   const table = useReactTable({
-    data:  (data?.transactions || []),
+    data: data?.transactions || [],
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -70,7 +70,7 @@ export default function DataTable<TData, TValue>({
     enableSorting: true,
   });
 
-  const totalPages =  data?.totalPages 
+  const totalPages = data?.totalPages;
   return (
     <>
       {isLoading ? (
