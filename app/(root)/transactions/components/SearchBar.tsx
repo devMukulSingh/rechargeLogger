@@ -9,47 +9,24 @@ import toast from "react-hot-toast";
 import useAddParams from "@/lib/hooks/useAddParams";
 
 interface SearchBarProps {}
-const fetcher = ({ url, args }: { url: string; args: { mobile: string } }) =>
-axios
-  .get(url, {
-    params:args
-  })
-  .then((res) => res.data);
 
 export function SearchBar({}: SearchBarProps) {
   const [inputQuery, setInputQuery] = useState("");
   let params = new URLSearchParams(window.location.search);
-  const query = useSearchParams().get("query");
-  const { addSearchParams } = useAddParams();
   const router = useRouter();
-
-  const { data } = useSWR(
-    (query && query!=='') ? 
-    {
-      url:  `/api/transaction/get-transaction` ,
-      args: { mobile: query },
-    } : null
-    ,
-    fetcher,
-    {
-      onError(e) {
-        console.log(e);
-        if (e?.response?.data) toast.error(e.response.data.error);
-        else toast.error("Internal server error");
-      },
-    }
-  );
 
   const handleSearch = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && e.currentTarget.value.trim() !== "") {
       const query = e.currentTarget.value.trim();
-      router.push(`transactions?query=${query}`)
+      router.push(`transactions?query=${query}`);
     }
   };
   const handleClearSearch = () => {
-    setInputQuery("");
-    params.delete('query')
-    router.push(`/transactions?${params.toString()}`);
+    if (inputQuery !== "") {
+      setInputQuery("");
+      params.delete("query");
+      router.push(`/transactions?${params.toString()}`);
+    }
   };
 
   return (
@@ -68,7 +45,7 @@ export function SearchBar({}: SearchBarProps) {
         border-2
         "
     >
-      <Search className=""  />
+      <Search className="" />
       <Input
         onChange={(e) => setInputQuery(e.target.value)}
         value={inputQuery}

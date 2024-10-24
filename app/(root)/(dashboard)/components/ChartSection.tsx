@@ -14,10 +14,10 @@ interface ChartSectionProps {}
 const ChartSection: React.FC<ChartSectionProps> = async ({}) => {
   const [graphData, setGraphData] = useState<IgraphData[]>([]);
   const { data: transactions } = useSWR<ITransactions[]>(
-    `/api/transaction/get-transactions`
+    `/api/transaction/get-transactions`,
   );
   console.log(transactions);
-  
+
   const getGraphData = () => {
     const graphData: IgraphData[] = [
       { name: "Jan", total: 0 },

@@ -35,7 +35,7 @@ const PaginationButtons = ({ totalPages }: Props) => {
           <div
             className={`cursor-pointer flex items-center justify-center ${index + 1 === page ? `bg-white h-8 w-8 rounded-full ` : ``} `}
             key={index}
-            onClick={() => addSearchParams({page:index+1}) }
+            onClick={() => addSearchParams({ page: index + 1 })}
           >
             {index + 1}
           </div>

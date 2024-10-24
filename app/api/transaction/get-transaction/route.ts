@@ -6,7 +6,9 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET(req: NextRequest, res: NextResponse) {
   try {
     const { userId } = auth();
-    const mobile = req.nextUrl.searchParams.get('mobile');
+    const mobile = req.nextUrl.searchParams.get("mobile");
+    const pageIndex = req.nextUrl.searchParams.get('pageIndex')
+    const pageSize = req.nextUrl.searchParams.get('pageSize')
 
     if (!userId)
       return NextResponse.json(
@@ -16,12 +18,29 @@ export async function GET(req: NextRequest, res: NextResponse) {
         { status: 403 },
       );
 
-    if (!mobile) return NextResponse.json(
-      {
-        error: "Mobile is required",
-      },
-      { status: 400 },
-    );
+    if (!mobile)
+      return NextResponse.json(
+        {
+          error: "Mobile is required",
+        },
+        { status: 400 },
+      );
+
+    if (!pageIndex)
+      return NextResponse.json(
+        {
+          error: "Page index is required",
+        },
+        { status: 400 },
+      );
+    if (!pageSize)
+      return NextResponse.json(
+        {
+          error: "page Size is required",
+        },
+        { status: 400 },
+      );
+
 
     const transactions = await prisma.transaction.findMany({
       where: {
@@ -40,8 +59,15 @@ export async function GET(req: NextRequest, res: NextResponse) {
           },
         },
       },
+      skip: ( Number(pageIndex) * Number(pageSize) ),
+      take: Number(pageSize)
     });
-
+    const totalTransactions = await prisma.transaction.count({
+      where:{
+        userId,
+        mobile
+      }
+    })
     const formattedTransaction = transactions.map((transaction, index) => ({
       plan: transaction.plan.amount,
       dueAmount: transaction.dueAmount,
@@ -49,9 +75,12 @@ export async function GET(req: NextRequest, res: NextResponse) {
       mobile: transaction.mobile,
       createdAt: format(transaction.createdAt, "HH:mm - dd/MM/yyyy"),
       id: transaction.id,
-    }
-    ))
-    return NextResponse.json({ transactions: formattedTransaction }, { status: 200 });
+    }));
+    const totalPages = Math.ceil(totalTransactions/Number(pageSize));
+    return NextResponse.json(
+      { transactions: formattedTransaction,totalPages },
+      { status: 200 },
+    );
   } catch (e) {
     console.log(e);
     return NextResponse.json(

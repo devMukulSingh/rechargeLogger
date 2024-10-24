@@ -27,7 +27,6 @@ import toast from "react-hot-toast";
 interface IdataTableProps<TData, TValue> {
   columns: ColumnDef<TransactionColumn, TValue>[];
 }
-
 export default function DataTable<TData, TValue>({
   columns,
 }: IdataTableProps<TData, TValue>) {
@@ -37,30 +36,25 @@ export default function DataTable<TData, TValue>({
 
   const { data, isLoading } = useSWR(
     {
-      url: `/api/transaction/get-transactions`,
-      args: { pageIndex: page - 1 || 0, pageSize },
+      url: query
+        ? `/api/transaction/get-transaction`
+        : `/api/transaction/get-transactions`,
+      args: { pageIndex: page - 1, pageSize, mobile:query },
     },
     fetcher,
     {
-      onError(e){
+      onError(e) {
         console.log(e);
-        if(e?.response?.data) toast.error(e.response.data.error);
-        else toast.error(`Internal server error`)
+        if (e?.response?.data) toast.error(e.response.data.error);
+        else toast.error(`Internal server error`);
       },
       keepPreviousData: true,
       revalidateOnFocus: false,
     }
   );
-  const {
-    data:searchedTran,
-  } = useSWR({
-    url: `/api/transaction/get-transaction`,
-    args: { mobile: query },
-  });
-  console.log(data, "data");
-  
+
   const table = useReactTable({
-    data: searchedTran?.transactions ?? (data?.transactions || []),
+    data:  (data?.transactions || []),
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -76,7 +70,7 @@ export default function DataTable<TData, TValue>({
     enableSorting: true,
   });
 
-  const totalPages = useMemo(() => data?.totalPages, []);
+  const totalPages =  data?.totalPages 
   return (
     <>
       {isLoading ? (
@@ -118,7 +112,7 @@ export default function DataTable<TData, TValue>({
                               >
                                 {flexRender(
                                   header.column.columnDef.header,
-                                  header.getContext()
+                                  header.getContext(),
                                 )}
                                 {{
                                   asc: " 🔼",
@@ -146,7 +140,7 @@ export default function DataTable<TData, TValue>({
                         <TableCell key={cell.id}>
                           {flexRender(
                             cell.column.columnDef.cell,
-                            cell.getContext()
+                            cell.getContext(),
                           )}
                         </TableCell>
                       ))}

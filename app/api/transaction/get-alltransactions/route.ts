@@ -4,56 +4,56 @@ import { format } from "date-fns";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest, res: NextResponse) {
-    try {
-        const { userId } = auth();
+  try {
+    const { userId } = auth();
 
-        if (!userId)
-            return NextResponse.json(
-                {
-                    error: "Unauthenticated",
-                },
-                { status: 403 },
-            );
-            const year = new Date().getFullYear();
-        const currYearDate = new Date(1,1,year)
-        const transactions = await prisma.transaction.findMany({
-            where: {
-                userId,
-                createdAt: {
-                    gte: currYearDate
-                }
-            },
-            include: {
-                operator: {
-                    select: {
-                        name: true,
-                    },
-                },
-                plan: {
-                    select: {
-                        amount: true,
-                    },
-                },
-            },
-            orderBy: {
-                createdAt: "desc",
-            },
-        });
+    if (!userId)
+      return NextResponse.json(
+        {
+          error: "Unauthenticated",
+        },
+        { status: 403 },
+      );
+    const year = new Date().getFullYear();
+    const currYearDate = new Date(1, 1, year);
+    const transactions = await prisma.transaction.findMany({
+      where: {
+        userId,
+        createdAt: {
+          gte: currYearDate,
+        },
+      },
+      include: {
+        operator: {
+          select: {
+            name: true,
+          },
+        },
+        plan: {
+          select: {
+            amount: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
 
-        const formattedTransaction = transactions?.map((item) => ({
-            plan: item.plan.amount,
-            dueAmount: item.dueAmount,
-            operator: item.operator.name,
-            mobile: item.mobile,
-            createdAt: format(item.createdAt, "HH:mm - dd/MM/yyyy"),
-            id: item.id,
-        }));
-        return NextResponse.json({ transactions }, { status: 200 });
-    } catch (e) {
-        console.log(e);
-        return NextResponse.json(
-            { error: "Internal Server error" },
-            { status: 500 },
-        );
-    }
+    const formattedTransaction = transactions?.map((item) => ({
+      plan: item.plan.amount,
+      dueAmount: item.dueAmount,
+      operator: item.operator.name,
+      mobile: item.mobile,
+      createdAt: format(item.createdAt, "HH:mm - dd/MM/yyyy"),
+      id: item.id,
+    }));
+    return NextResponse.json({ transactions }, { status: 200 });
+  } catch (e) {
+    console.log(e);
+    return NextResponse.json(
+      { error: "Internal Server error" },
+      { status: 500 },
+    );
+  }
 }

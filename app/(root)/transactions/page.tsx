@@ -4,7 +4,9 @@ import { Operator, Plan, Transaction } from "@prisma/client";
 import TableSkeleton from "@/components/TableSkeleton";
 import dynamic from "next/dynamic";
 const SearchBar = lazy(() => import("./components/SearchBar"));
-const DataTable = dynamic(() => import("./components/DataTable"),{ssr:false});
+const DataTable = dynamic(() => import("./components/DataTable"), {
+  ssr: false,
+});
 
 export interface ITransactions extends Transaction {
   plan: Plan;
