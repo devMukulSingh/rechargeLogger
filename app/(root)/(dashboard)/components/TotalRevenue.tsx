@@ -14,7 +14,7 @@ const TotalRevenue: FC<TotalRevenueProps> = ({}) => {
           <h1>Total Revenue</h1>
           <DollarSign className="ml-auto" />
         </CardHeader>
-        <CardContent className="mt-auto text-2xl font-semibold">
+        <CardContent className="mt-auto text-2xl font-semibo3ld">
           ₹{selectedMonthRevenue}
         </CardContent>
       </Card>

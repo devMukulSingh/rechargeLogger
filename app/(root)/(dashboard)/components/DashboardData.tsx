@@ -1,5 +1,5 @@
 "use client";
-import { FC, lazy, Suspense, useEffect, useState } from "react";
+import { FC, Fragment, lazy, Suspense, useEffect, useState } from "react";
 import useSWR from "swr";
 import { cn, fetcher, months } from "@/lib/utils";
 import CardSkeleton from "./CardSkeleton";
@@ -20,8 +20,13 @@ import { Button } from "@/components/ui/button";
 import { addDays, format } from "date-fns";
 import { DateRange } from "react-day-picker";
 
+interface IapiResponse {
+  transactions: ITransactions[]
+  totalPage?:number;
+}
+
 const TotalRevenue = lazy(
-  () => import("@/app/(root)/(dashboard)/components/TotalRevenue"),
+  () => import("@/app/(root)/(dashboard)/components/TotalRevenue")
 );
 const Sales = lazy(() => import("@/app/(root)/(dashboard)/components/Sales"));
 
@@ -38,17 +43,15 @@ const DashboardData: FC<DashboardDataProps> = () => {
   });
   const dispatch = useAppDispatch();
 
-  const { data } = useSWR<ITransactions[]>(`/api/transaction/get-transactions`);
-
-  const { data: transactions, isLoading } = useSWR<ITransactions[]>(
-    !data ? `/api/transaction/get-transactions` : null,
+  const { data, isLoading } = useSWR<IapiResponse>(
+    { url: `/api/transaction/get-alltransactions` },
     fetcher,
     {
       revalidateOnFocus: false,
       onError(err) {
         console.log(`Error in getTransactions`, err);
       },
-    },
+    }
   );
 
   //handling month change eveent
@@ -59,7 +62,7 @@ const DashboardData: FC<DashboardDataProps> = () => {
     const to = date?.to?.setHours(0, 0, 0, 0) || Date.now();
     if (date && date?.from && date?.to) {
       selectedDateTransactions =
-        (data || transactions)?.filter((tran) => {
+        (data?.transactions)?.filter((tran) => {
           const createdAt = new Date(tran.createdAt).setHours(0, 0, 0, 0);
           if (createdAt >= from && createdAt <= to) {
             return tran;
@@ -68,7 +71,7 @@ const DashboardData: FC<DashboardDataProps> = () => {
       // console.log(selectedDateTransactions);
     } else if (!date?.from || !date?.to) {
       selectedDateTransactions =
-        (data || transactions)?.filter((tran) => {
+        (data?.transactions)?.filter((tran) => {
           const createdAt = new Date(tran.createdAt).setHours(0, 0, 0, 0);
           if (createdAt === from || createdAt === to) {
             return tran;
@@ -89,8 +92,8 @@ const DashboardData: FC<DashboardDataProps> = () => {
   useEffect(() => {
     //setting currentmonth transactions in state
     const currMonthTransactions =
-      (data || transactions)?.filter(
-        (tran) => new Date(tran.createdAt).getMonth() === Number(currentMonth),
+      data?.transactions?.filter(
+        (tran) => new Date(tran.createdAt).getMonth() === Number(currentMonth)
       ) || [];
     dispatch(setSelectedMonthTransactions(currMonthTransactions?.length));
 
@@ -102,7 +105,7 @@ const DashboardData: FC<DashboardDataProps> = () => {
           .reduce((acc: number, curr: number) => acc + curr, 0) || 0;
       dispatch(setSelectedMonthRevenue(filteredRevenue));
     }
-  }, [data, transactions]);
+  }, [data?.transactions]);
   ///////////////////////////////////////////////
   return (
     <div className="flex flex-col gap-5">
@@ -113,16 +116,16 @@ const DashboardData: FC<DashboardDataProps> = () => {
             variant={"outline"}
             className={cn(
               "w-[300px] justify-start text-left font-normal",
-              !selectedDateRange && "text-muted-foreground",
+              !selectedDateRange && "text-muted-foreground"
             )}
           >
             <CalendarIcon className="mr-2 h-4 w-4" />
             {selectedDateRange?.from ? (
               selectedDateRange.to ? (
-                <>
+                <Fragment>
                   {format(selectedDateRange.from, "LLL dd, y")} -{" "}
                   {format(selectedDateRange.to, "LLL dd, y")}
-                </>
+                </Fragment>
               ) : (
                 format(selectedDateRange.from, "LLL dd, y")
               )

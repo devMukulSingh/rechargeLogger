@@ -6,7 +6,9 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export const fetcher = (url: string) => axios.get(url).then((res) => res.data);
+export const fetcher = ({url,args} : {url:string,args:{ pageIndex:number,pageSize:number}}) => axios.get(url,{
+  params:args
+}).then((res) => res.data);
 
 export const months = [
   "January",

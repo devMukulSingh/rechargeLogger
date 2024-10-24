@@ -1,8 +1,9 @@
 "use client";
 import useSWR from "swr";
 import { ITransactions } from "../../transactions/page";
-import { useCallback, useEffect, useState } from "react";
+import { Fragment, useCallback, useEffect, useState } from "react";
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
+import { fetcher } from "@/lib/utils";
 
 export interface IgraphData {
   name: string;
@@ -13,8 +14,10 @@ interface ChartSectionProps {}
 const ChartSection: React.FC<ChartSectionProps> = async ({}) => {
   const [graphData, setGraphData] = useState<IgraphData[]>([]);
   const { data: transactions } = useSWR<ITransactions[]>(
-    `/api/transaction/get-transactions`,
+    `/api/transaction/get-transactions`
   );
+  console.log(transactions);
+  
   const getGraphData = () => {
     const graphData: IgraphData[] = [
       { name: "Jan", total: 0 },
@@ -58,7 +61,7 @@ const ChartSection: React.FC<ChartSectionProps> = async ({}) => {
   }, []);
 
   return (
-    <>
+    <Fragment>
       <ResponsiveContainer
         width="100%"
         height={350}
@@ -82,7 +85,7 @@ const ChartSection: React.FC<ChartSectionProps> = async ({}) => {
           <Bar dataKey="total" fill="#0F172A" radius={[4, 4, 0, 0]} />
         </BarChart>
       </ResponsiveContainer>
-    </>
+    </Fragment>
   );
 };
 

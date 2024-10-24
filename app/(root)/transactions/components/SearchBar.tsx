@@ -1,52 +1,57 @@
 "use client";
-import React, { FC, useState } from "react";
+import React, { FC, KeyboardEvent, useState } from "react";
 import { Search, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { fetcher } from "@/lib/utils";
 import useSWR from "swr";
-import { useAppDispatch } from "@/redux/hooks";
-import { setTransactions } from "@/redux/reducers/persistedReducer";
-import { format } from "date-fns";
-import { ITransactions } from "../page";
+import { useRouter, useSearchParams } from "next/navigation";
+import axios from "axios";
+import toast from "react-hot-toast";
+import useAddParams from "@/lib/hooks/useAddParams";
 
-interface SearchBarProps {
-  // tableData: any;
-}
+interface SearchBarProps {}
+const fetcher = ({ url, args }: { url: string; args: { mobile: string } }) =>
+axios
+  .get(url, {
+    params:args
+  })
+  .then((res) => res.data);
 
 export function SearchBar({}: SearchBarProps) {
-  const [query, setQuery] = useState("");
-  const dispatch = useAppDispatch();
+  const [inputQuery, setInputQuery] = useState("");
+  let params = new URLSearchParams(window.location.search);
+  const query = useSearchParams().get("query");
+  const { addSearchParams } = useAddParams();
+  const router = useRouter();
 
-  const { isLoading, data: transactions } = useSWR<ITransactions[]>(
-    `/api/transaction/get-transactions`,
+  const { data } = useSWR(
+    (query && query!=='') ? 
+    {
+      url:  `/api/transaction/get-transaction` ,
+      args: { mobile: query },
+    } : null
+    ,
+    fetcher,
+    {
+      onError(e) {
+        console.log(e);
+        if (e?.response?.data) toast.error(e.response.data.error);
+        else toast.error("Internal server error");
+      },
+    }
   );
-  const formatted = transactions?.map((item) => ({
-    plan: item.plan.amount,
-    dueAmount: item.dueAmount,
-    operator: item.operator.name,
-    mobile: item.mobile,
-    createdAt: format(item.createdAt, "HH:mm - dd/MM/yyyy"),
-    id: item.id,
-  }));
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setQuery(e.target.value);
-    const query = e.target.value.trim().toLowerCase();
-    if (query !== "") {
-      const filterdData = formatted?.filter(
-        (item) =>
-          item?.mobile?.toLowerCase()?.includes(query) ||
-          item.operator.toLowerCase().includes(query),
-      );
-
-      dispatch(setTransactions(filterdData));
-    } else dispatch(setTransactions(formatted));
+  const handleSearch = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && e.currentTarget.value.trim() !== "") {
+      const query = e.currentTarget.value.trim();
+      router.push(`transactions?query=${query}`)
+    }
   };
-
   const handleClearSearch = () => {
-    setQuery("");
-    dispatch(setTransactions(formatted));
+    setInputQuery("");
+    params.delete('query')
+    router.push(`/transactions?${params.toString()}`);
   };
+
   return (
     <div
       className="
@@ -63,11 +68,12 @@ export function SearchBar({}: SearchBarProps) {
         border-2
         "
     >
-      <Search className="cursor-pointer" />
+      <Search className=""  />
       <Input
+        onChange={(e) => setInputQuery(e.target.value)}
+        value={inputQuery}
+        onKeyUp={handleSearch}
         className="focus-visible:ring-0 border-0 focus-visible:ring-offset-0 "
-        onChange={handleChange}
-        value={query}
         placeholder="Type here to search..."
       />
       <X onClick={handleClearSearch} className="cursor-pointer" />
