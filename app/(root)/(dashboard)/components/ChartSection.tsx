@@ -4,6 +4,7 @@ import { ITransactions } from "../../transactions/page";
 import { Fragment, useCallback, useEffect, useState } from "react";
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
 import { fetcher } from "@/lib/utils";
+import { IapiResponse } from "./DashboardData";
 
 export interface IgraphData {
   name: string;
@@ -13,10 +14,9 @@ interface ChartSectionProps {}
 
 const ChartSection: React.FC<ChartSectionProps> = async ({}) => {
   const [graphData, setGraphData] = useState<IgraphData[]>([]);
-  const { data: transactions } = useSWR<ITransactions[]>(
-    `/api/transaction/get-transactions`,
-  );
-  console.log(transactions);
+  const { data } = useSWR<IapiResponse>({
+    url: `/api/transaction/get-alltransactions`,
+  });
 
   const getGraphData = () => {
     const graphData: IgraphData[] = [
@@ -35,14 +35,14 @@ const ChartSection: React.FC<ChartSectionProps> = async ({}) => {
     ];
 
     let i = 0;
-    if (transactions) {
+    if (data) {
       // console.log(transactions);
 
       for (let obj of graphData) {
         let totalMonthlyRevenue = 0;
         //getting totalRevenue of a particular month
-        totalMonthlyRevenue = transactions
-          .filter((item) => new Date(item.createdAt).getMonth() === i)
+        totalMonthlyRevenue = data?.transactions
+          ?.filter((item) => new Date(item.createdAt).getMonth() === i)
           .map((item) => item.plan.amount)
           .reduce((acc, next) => {
             return acc + next;

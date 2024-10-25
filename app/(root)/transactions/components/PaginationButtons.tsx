@@ -35,7 +35,7 @@ const PaginationButtons = ({ totalPages }: Props) => {
     <>
       <footer className="flex gap-5  mt-auto  self-center items-center text-black">
         <Button
-          disabled={page===1}
+          disabled={page === 1}
           onClick={() => addSearchParams({ page: 1 })}
           variant="outline"
           size="sm"
@@ -69,7 +69,7 @@ const PaginationButtons = ({ totalPages }: Props) => {
           &gt;&gt;
         </Button>
         <Button
-          disabled={page===totalPages}
+          disabled={page === totalPages}
           onClick={() => addSearchParams({ page: totalPages })}
           variant="default"
           size="sm"

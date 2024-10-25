@@ -20,7 +20,7 @@ import { Button } from "@/components/ui/button";
 import { addDays, format } from "date-fns";
 import { DateRange } from "react-day-picker";
 
-interface IapiResponse {
+export interface IapiResponse {
   transactions: ITransactions[];
   totalPage?: number;
 }
