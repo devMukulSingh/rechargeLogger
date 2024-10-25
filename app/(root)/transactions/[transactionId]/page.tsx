@@ -64,16 +64,16 @@ type formFields = z.infer<typeof rechargeSchema>;
 const TramsactionEditPage = () => {
   const pageSize = 7;
   const searchParams = useSearchParams();
-  const pageIndex = Number(searchParams.get('page')) || 1;
+  const pageIndex = Number(searchParams.get("page")) || 1;
 
   const router = useRouter();
   const { transactionId } = useParams();
 
   const { data } = useSWR({
-    url:`/api/transaction/get-transactions`,
-    args:{pageIndex:pageIndex-1,pageSize,mobile:null}
+    url: `/api/transaction/get-transactions`,
+    args: { pageIndex: pageIndex - 1, pageSize, mobile: null },
   });
-  
+
   const { isMutating, trigger } = useSWRMutation(
     `/api/transaction/edit-transaction`,
     editTransaction,
@@ -90,7 +90,7 @@ const TramsactionEditPage = () => {
   );
 
   const transaction = data?.transactions?.find(
-    (tran: TransactionColumn) => tran.id === transactionId
+    (tran: TransactionColumn) => tran.id === transactionId,
   );
 
   const form = useForm<formFields>({
