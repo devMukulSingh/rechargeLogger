@@ -60,12 +60,10 @@ export async function GET(req: NextRequest, res: NextResponse) {
       dueAmount: item.dueAmount,
       operator: item.operator.name,
       mobile: item.mobile,
-      createdAt: format(item.createdAt, "PP- p",{
-        
-      }),
+      createdAt: item.createdAt ,
       id: item.id,
     }));
-    
+
     const totalPages = Math.ceil(totalTransactions / 8);
     return NextResponse.json(
       { transactions: formattedTransaction, totalPages },

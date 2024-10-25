@@ -45,7 +45,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
       dueAmount: item.dueAmount,
       operator: item.operator.name,
       mobile: item.mobile,
-      createdAt: format(item.createdAt, "HH:mm - dd/MM/yyyy"),
+      createdAt:item.createdAt,
       id: item.id,
     }));
     return NextResponse.json({ transactions }, { status: 200 });

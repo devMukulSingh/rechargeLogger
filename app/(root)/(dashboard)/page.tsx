@@ -11,13 +11,7 @@ const ChartSection = dynamic(
     loading: () => <ChartSkeleton />,
   },
 );
-// const DashboardData = lazy( () => import("./components/DashboardData"));
-// const DashboardData = dynamic(
-//   () => import("@/app/(root)/(dashboard)/components/DashboardData"),
-//   {
-//     loading: () => <DashboardDataSkeleton />,
-//   },
-// );
+
 
 const DashboardPage = async () => {
   return (

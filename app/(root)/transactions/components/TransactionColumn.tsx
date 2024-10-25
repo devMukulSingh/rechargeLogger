@@ -2,13 +2,14 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import TransactionAction from "./TransactionAction";
+import { format } from "date-fns";
 
 export type TransactionColumn = {
   mobile: string;
   operator: string;
   plan: number;
   dueAmount: number;
-  createdAt: string;
+  createdAt: Date;
   id: string;
 };
 
@@ -34,6 +35,7 @@ export const columns: ColumnDef<TransactionColumn>[] = [
   {
     accessorKey: "createdAt",
     header: "Date",
+    cell: ({ row }) => <>{format(row.original.createdAt, "PP- p")}</>,
   },
   {
     id: "actions",

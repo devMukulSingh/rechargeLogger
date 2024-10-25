@@ -72,7 +72,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
       dueAmount: transaction.dueAmount,
       operator: transaction.operator.name,
       mobile: transaction.mobile,
-      createdAt: format(transaction.createdAt, "HH:mm - dd/MM/yyyy"),
+      createdAt: transaction.createdAt,
       id: transaction.id,
     }));
     const totalPages = Math.ceil(totalTransactions / Number(pageSize));
