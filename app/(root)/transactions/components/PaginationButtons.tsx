@@ -29,7 +29,6 @@ const PaginationButtons = ({ totalPages }: Props) => {
     page + 2 < totalPages ? page + 2 : totalPages,
   );
 
-  console.log(arr, "arr");
 
   return (
     <>

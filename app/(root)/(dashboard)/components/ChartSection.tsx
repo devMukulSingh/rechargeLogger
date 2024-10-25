@@ -58,7 +58,7 @@ const ChartSection: React.FC<ChartSectionProps> = async ({}) => {
   useEffect(() => {
     const data = getGraphData();
     setGraphData(data);
-  }, []);
+  }, [data]);
 
   return (
     <Fragment>
