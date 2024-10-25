@@ -29,7 +29,6 @@ const PaginationButtons = ({ totalPages }: Props) => {
     page + 2 < totalPages ? page + 2 : totalPages,
   );
 
-
   return (
     <>
       <footer className="flex gap-5  mt-auto  self-center items-center text-black">

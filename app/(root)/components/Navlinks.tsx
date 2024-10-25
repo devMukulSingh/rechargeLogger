@@ -12,12 +12,12 @@ const Navlinks = () => {
     },
     {
       title: "Entry",
-      value: "entry",
+      value: "/entry",
       isActive: pathName.endsWith("/entry"),
     },
     {
       title: "Transactions",
-      value: "transactions",
+      value: "/transactions",
       isActive: pathName.endsWith("/transactions"),
     },
   ];
@@ -25,6 +25,7 @@ const Navlinks = () => {
     <div className="flex gap-10 ">
       {navlinks.map((link, index) => (
         <Link
+          replace
           prefetch={true}
           href={link.value}
           key={index}

@@ -9,7 +9,7 @@ import { z } from "zod";
 import axios from "axios";
 import useSWRMutation from "swr/mutation";
 import toast from "react-hot-toast";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useAppSelector } from "@/redux/hooks";
 const MobileField = dynamic(
   () => import("../../entry/components/MobileField"),
@@ -34,9 +34,6 @@ const DueAmountField = dynamic(
 );
 import useSWR from "swr";
 import { TransactionColumn } from "../components/TransactionColumn";
-import { fetcher } from "@/lib/utils";
-import { format } from "date-fns";
-import { ITransactions } from "../page";
 import dynamic from "next/dynamic";
 import InputSkeleton from "../../entry/components/InputSkeleton";
 
@@ -65,10 +62,18 @@ async function editTransaction(url: string, { arg }: { arg: Iarg }) {
 type formFields = z.infer<typeof rechargeSchema>;
 
 const TramsactionEditPage = () => {
+  const pageSize = 7;
+  const searchParams = useSearchParams();
+  const pageIndex = Number(searchParams.get('page')) || 1;
+
   const router = useRouter();
   const { transactionId } = useParams();
 
-  const { data: transactions } = useSWR(`/api/transaction/get-transactions`);
+  const { data } = useSWR({
+    url:`/api/transaction/get-transactions`,
+    args:{pageIndex:pageIndex-1,pageSize,mobile:null}
+  });
+  
   const { isMutating, trigger } = useSWRMutation(
     `/api/transaction/edit-transaction`,
     editTransaction,
@@ -84,23 +89,17 @@ const TramsactionEditPage = () => {
     },
   );
 
-  const transaction = transactions?.find(
-    (tran: TransactionColumn) => tran.id === transactionId,
+  const transaction = data?.transactions?.find(
+    (tran: TransactionColumn) => tran.id === transactionId
   );
-  const formatted = {
-    plan: transaction?.plan.amount,
-    dueAmount: transaction?.dueAmount,
-    operator: transaction?.operator.name,
-    mobile: transaction?.mobile,
-  };
 
   const form = useForm<formFields>({
     resolver: zodResolver(rechargeSchema),
     defaultValues: {
-      dueAmount: formatted?.dueAmount,
-      mobile: formatted?.mobile,
-      operator: formatted?.operator,
-      plan: formatted?.plan,
+      dueAmount: transaction?.dueAmount,
+      mobile: transaction?.mobile,
+      operator: transaction?.operator,
+      plan: transaction?.plan,
     },
   });
   const onSubmit = async (data: formFields) => {
