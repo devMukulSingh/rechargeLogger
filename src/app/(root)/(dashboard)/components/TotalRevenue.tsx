@@ -3,10 +3,12 @@ import { useAppSelector } from "@/src/redux/hooks";
 import { DollarSign } from "lucide-react";
 import { FC } from "react";
 
-interface TotalRevenueProps {}
+interface TotalRevenueProps {
+  totalRevenue: number | undefined;
+}
 
-const TotalRevenue: FC<TotalRevenueProps> = ({}) => {
-  const { selectedMonthRevenue } = useAppSelector((state) => state.rootReducer);
+const TotalRevenue: FC<TotalRevenueProps> = ({ totalRevenue }) => {
+  // const { selectedMonthRevenue } = useAppSelector((state) => state.rootReducer);
   return (
     <>
       <Card>
@@ -15,7 +17,7 @@ const TotalRevenue: FC<TotalRevenueProps> = ({}) => {
           <DollarSign className="ml-auto" />
         </CardHeader>
         <CardContent className="mt-auto text-2xl font-semibo3ld">
-          ₹{selectedMonthRevenue}
+          ₹{totalRevenue || 0}
         </CardContent>
       </Card>
     </>

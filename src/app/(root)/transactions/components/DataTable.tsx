@@ -34,7 +34,6 @@ export default function DataTable<TData, TValue>({
   const query = useSearchParams().get("query");
   const pageSize = 7;
 
-
   const { data: searchedTransactions } =
     trpc.transactionRouter.getTransaction.useQuery(
       query
@@ -54,12 +53,13 @@ export default function DataTable<TData, TValue>({
     isError,
     error,
     isLoading,
-  } = trpc.transactionRouter.getTransactions.useQuery({
-    pageIndex: page - 1,
-    pageSize,
-  },{
-
-  });
+  } = trpc.transactionRouter.getTransactions.useQuery(
+    {
+      pageIndex: page - 1,
+      pageSize,
+    },
+    {},
+  );
 
   if (isError) {
     console.log(error);

@@ -3,6 +3,7 @@ import { publicProcedure, router } from "../trpc";
 import { prisma } from "@/src/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
 import { z } from "zod";
+import { Plan } from "@prisma/client";
 
 export const transactionRouter = router({
   postTransaction: publicProcedure
@@ -202,7 +203,7 @@ export const transactionRouter = router({
     if (!userId) return null;
 
     const year = new Date().getFullYear();
-    const currYearDate = new Date(1, 1, year);
+    const currYearDate = new Date(year, 1, 1);
     const transactions = await prisma.transaction.findMany({
       where: {
         userId,
@@ -224,4 +225,50 @@ export const transactionRouter = router({
     });
     return transactions;
   }),
+
+  getFilteredRevenue: publicProcedure.input(
+    z.object({
+      from: z.string({
+        required_error: "From date is required"
+      }),
+      to: z.string({
+        required_error: "To date is required"
+      })
+    })
+  ).query(async ({ input }) => {
+    const { userId } = auth();
+    if (!userId) return null
+    const { from, to } = input
+
+    let transactions: { plan: Plan }[]
+    if (from !== "" && to !== "") {
+      transactions = await prisma.transaction.findMany({
+        where: {
+          userId,
+          createdAt: {
+            gte: from,
+            lte: to,
+          }
+        },
+        select: {
+          plan: true
+        }
+      })
+    }
+    else {
+      transactions = await prisma.transaction.findMany({
+        where: {
+          userId,
+          createdAt: to === "" ? from : to
+        },
+        select: {
+          plan: true
+        }
+      })
+    }
+    const totalRevenue = transactions.reduce((prev, curr) => prev + curr.plan.amount,0);
+    return { totalRevenue, transactions: transactions.length }
+  })
+
+  
 });

@@ -3,13 +3,11 @@ import { useAppSelector } from "@/src/redux/hooks";
 import { CreditCard, DollarSign } from "lucide-react";
 import { FC } from "react";
 
-interface SalesProps {}
+interface SalesProps {
+  transactions: number | undefined;
+}
 
-const Sales: FC<SalesProps> = ({}) => {
-  const { selectedMonthTransactions } = useAppSelector(
-    (state) => state.rootReducer,
-  );
-
+const Sales: FC<SalesProps> = ({ transactions }) => {
   return (
     <>
       <Card>
@@ -18,7 +16,7 @@ const Sales: FC<SalesProps> = ({}) => {
           <CreditCard className="ml-auto" />
         </CardHeader>
         <CardContent className="mt-auto text-2xl font-semibold">
-          +{selectedMonthTransactions}
+          +{transactions || 0}
         </CardContent>
       </Card>
     </>
