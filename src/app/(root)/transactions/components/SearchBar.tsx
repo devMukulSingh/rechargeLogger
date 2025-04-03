@@ -4,7 +4,6 @@ import { Search, X } from "lucide-react";
 import { Input } from "@/src/components/ui/input";
 import { useRouter, useSearchParams } from "next/navigation";
 
-
 interface SearchBarProps {}
 
 export function SearchBar({}: SearchBarProps) {

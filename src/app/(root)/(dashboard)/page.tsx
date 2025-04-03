@@ -8,7 +8,7 @@ const ChartSection = dynamic(
   () => import("@/src/app/(root)/(dashboard)/components/ChartSection"),
   {
     loading: () => <ChartSkeleton />,
-  }
+  },
 );
 
 const DashboardPage = async () => {

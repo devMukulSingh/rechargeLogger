@@ -12,19 +12,15 @@ interface ChartSectionProps {}
 
 const ChartSection: React.FC<ChartSectionProps> = async ({}) => {
   const [graphData, setGraphData] = useState<IgraphData[]>([]);
-      const {
-        data,
-        isLoading,
-        error,
-        isError,
-      } = trpc.transactionRouter.getAllTransactions.useQuery(undefined,{
-        refetchOnWindowFocus:false
-      });
+  const { data, isLoading, error, isError } =
+    trpc.transactionRouter.getAllTransactions.useQuery(undefined, {
+      refetchOnWindowFocus: false,
+    });
 
-      if(isError){
-        console.log(error);
-        toast.error(error.message)
-      }
+  if (isError) {
+    console.log(error);
+    toast.error(error.message);
+  }
 
   const getGraphData = () => {
     const graphData: IgraphData[] = [

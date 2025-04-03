@@ -23,10 +23,11 @@ import useSWRMutation from "swr/mutation";
 import toast from "react-hot-toast";
 import dynamic from "next/dynamic";
 import InputSkeleton from "./components/InputSkeleton";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useSWRConfig } from "swr/_internal";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { trpc } from "@/src/lib/trpc";
+import { getQueryKey } from "@trpc/react-query";
 
 export interface Iform {
   form: UseFormReturn<
@@ -45,7 +46,9 @@ export interface Iform {
 type formFields = z.infer<typeof rechargeSchema>;
 
 const EntryPage = () => {
-  const { mutate,isPending,isSuccess } =
+  const queryKey = getQueryKey(trpc.transactionRouter);
+  const queryClient = useQueryClient();
+  const { mutate, isPending, isSuccess } =
     trpc.transactionRouter.postTransaction.useMutation({
       onError(e) {
         console.log(`Error in add-transaction`, e);
@@ -55,6 +58,9 @@ const EntryPage = () => {
         toast.success("Transaction added");
         form.reset();
         form.setFocus("mobile", { shouldSelect: true });
+        queryClient.invalidateQueries({
+          queryKey,
+        });
       },
     });
 

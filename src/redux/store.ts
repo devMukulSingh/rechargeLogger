@@ -3,7 +3,7 @@ import rootSlice from "./reducers/persistedReducer";
 
 export const store = configureStore({
   reducer: {
-    rootReducer:rootSlice,
+    rootReducer: rootSlice,
   },
 });
 

@@ -44,7 +44,7 @@ const TransactionAction = ({ data }: Props) => {
     });
 
   const handleDelete = async () => {
-    mutate({transactionId:data.id});
+    mutate({ transactionId: data.id });
   };
   return (
     <div>

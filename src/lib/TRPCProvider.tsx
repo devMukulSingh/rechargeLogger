@@ -18,7 +18,19 @@ export default function TRPCProvider({ children }: { children: ReactNode }) {
     // assume localhost
     return `http://localhost:${process.env.PORT ?? 3000}`;
   }
-  const [queryClient] = useState(() => new QueryClient());
+   const [queryClient] = useState(() => new QueryClient({
+    defaultOptions:{
+      queries:{
+        staleTime:Infinity,
+        refetchOnWindowFocus:false,
+      
+      },
+      mutations:{
+
+      },
+
+    }
+  }));
   const [trpcClient] = useState(() =>
     trpc.createClient({
       links: [
@@ -32,7 +44,7 @@ export default function TRPCProvider({ children }: { children: ReactNode }) {
           },
         }),
       ],
-    })
+    }),
   );
 
   return (

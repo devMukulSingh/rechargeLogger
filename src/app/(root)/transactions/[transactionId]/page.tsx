@@ -13,7 +13,7 @@ const MobileField = dynamic(
   () => import("../../entry/components/MobileField"),
   {
     loading: () => <InputSkeleton />,
-  }
+  },
 );
 const PlanField = dynamic(() => import("../../entry/components/PlanField"), {
   loading: () => <InputSkeleton />,
@@ -22,13 +22,13 @@ const OperatorField = dynamic(
   () => import("../../entry/components/OperatorField"),
   {
     loading: () => <InputSkeleton />,
-  }
+  },
 );
 const DueAmountField = dynamic(
   () => import("../../entry/components/DueAmountField"),
   {
     loading: () => <InputSkeleton />,
-  }
+  },
 );
 import { TransactionColumn } from "../components/TransactionColumn";
 import dynamic from "next/dynamic";
@@ -62,15 +62,15 @@ const TramsactionEditPage = () => {
 
   const { data } = trpc.transactionRouter.getTransactions.useQuery(
     {
-      pageIndex:pageIndex-1,
+      pageIndex: pageIndex - 1,
       pageSize,
     },
     {
       refetchOnWindowFocus: false,
-    }
+    },
   );
 
-  const {  mutate,isPending } =
+  const { mutate, isPending } =
     trpc.transactionRouter.updateTransaction.useMutation({
       onError(e) {
         console.log(e);
@@ -82,7 +82,7 @@ const TramsactionEditPage = () => {
       },
     });
   const transaction = data?.transactions?.find(
-    (tran: TransactionColumn) => tran.id === transactionId
+    (tran: TransactionColumn) => tran.id === transactionId,
   );
 
   const form = useForm<formFields>({

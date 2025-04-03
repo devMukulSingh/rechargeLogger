@@ -21,7 +21,8 @@ import { useSearchParams } from "next/navigation";
 import PaginationButtons from "./PaginationButtons";
 import toast from "react-hot-toast";
 import { trpc } from "@/src/lib/trpc";
-import { skipToken } from "@tanstack/react-query";
+import { skipToken, useQueryClient } from "@tanstack/react-query";
+import { getQueryKey } from "@trpc/react-query";
 
 interface IdataTableProps<TData, TValue> {
   columns: ColumnDef<TransactionColumn, TValue>[];
@@ -33,25 +34,32 @@ export default function DataTable<TData, TValue>({
   const query = useSearchParams().get("query");
   const pageSize = 7;
 
+
   const { data: searchedTransactions } =
     trpc.transactionRouter.getTransaction.useQuery(
-      query ?
-      {
-        mobile: query || "",
-        pageIndex: page - 1,
-        pageSize,
-      }:skipToken,
+      query
+        ? {
+            mobile: query || "",
+            pageIndex: page - 1,
+            pageSize,
+          }
+        : skipToken,
       {
         trpc: { abortOnUnmount: true },
-        refetchOnWindowFocus: false,
-      } 
+      },
     );
 
-  const { data:paginatedTransactions, isError, error, isLoading } =
-    trpc.transactionRouter.getTransactions.useQuery({
-      pageIndex: page - 1,
-      pageSize,
-    });
+  const {
+    data: paginatedTransactions,
+    isError,
+    error,
+    isLoading,
+  } = trpc.transactionRouter.getTransactions.useQuery({
+    pageIndex: page - 1,
+    pageSize,
+  },{
+
+  });
 
   if (isError) {
     console.log(error);
@@ -120,7 +128,7 @@ export default function DataTable<TData, TValue>({
                               >
                                 {flexRender(
                                   header.column.columnDef.header,
-                                  header.getContext()
+                                  header.getContext(),
                                 )}
                                 {{
                                   asc: " 🔼",
@@ -148,7 +156,7 @@ export default function DataTable<TData, TValue>({
                         <TableCell key={cell.id}>
                           {flexRender(
                             cell.column.columnDef.cell,
-                            cell.getContext()
+                            cell.getContext(),
                           )}
                         </TableCell>
                       ))}

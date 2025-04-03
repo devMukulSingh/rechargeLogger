@@ -10,10 +10,10 @@ export interface IapiResponse {
 }
 
 const TotalRevenue = lazy(
-  () => import("@/src/app/(root)/(dashboard)/components/TotalRevenue")
+  () => import("@/src/app/(root)/(dashboard)/components/TotalRevenue"),
 );
 const Sales = lazy(
-  () => import("@/src/app/(root)/(dashboard)/components/Sales")
+  () => import("@/src/app/(root)/(dashboard)/components/Sales"),
 );
 
 interface DashboardDataProps {}
