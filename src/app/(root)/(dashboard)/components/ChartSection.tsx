@@ -12,6 +12,7 @@ import {
   SelectValue,
 } from "@/src/components/ui/select";
 import { router } from "@/src/server/trpc";
+import { Calendar } from "lucide-react";
 
 export interface IgraphData {
   name: string;
@@ -57,17 +58,18 @@ const ChartSection: React.FC<ChartSectionProps> = async ({}) => {
 export default ChartSection;
 
 function YearSelector() {
-  const router = useRouter()
+  const router = useRouter();
   const searchParams = useSearchParams();
   const { data } = trpc.analyticsRouter.getYears.useQuery();
   function onSelectChange(year: string) {
     const params = new URLSearchParams(searchParams);
     params.set("year", year);
-    router.push(`/?year=${year}`)
+    router.push(`/?${params.toString()}`);
   }
   return (
     <Select onValueChange={(year) => onSelectChange(year)}>
-      <SelectTrigger className="w-[10rem] text-black m">
+      <SelectTrigger className="w-[10rem] text-black">
+        <Calendar size={18} />
         <SelectValue placeholder="Select year" />
       </SelectTrigger>
       <SelectContent>

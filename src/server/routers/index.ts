@@ -4,7 +4,7 @@ import { transactionRouter } from "./transactionRouter";
 
 export const appRouter = router({
   transactionRouter,
-  analyticsRouter
+  analyticsRouter,
 });
 
 export type AppRouter = typeof appRouter;

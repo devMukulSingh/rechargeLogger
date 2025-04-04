@@ -36,7 +36,6 @@ const DateFilter = (props: Props) => {
     to: new Date(),
   });
 
-
   //handling month change eveent
   const debouncedChange = debounce((date: DateRange | undefined) => {
     const params = new URLSearchParams(searchParams.toString());
@@ -46,20 +45,20 @@ const DateFilter = (props: Props) => {
   }, 2000);
 
   // useEffect(() => {
-    //setting currentmonth transactions in state
-    // const currMonthTransactions =
-    //   allTransactions?.filter(
-    //     (tran) => new Date(tran.createdAt).getMonth() === Number(currentMonth)
-    //   ) || [];
-    // dispatch(setSelectedMonthTransactions(currMonthTransactions?.length));
-    // //setting selected month revenue in state
-    // if (currMonthTransactions.length > 0) {
-    //   const filteredRevenue =
-    //     currMonthTransactions
-    //       .map((tran) => tran.plan.amount)
-    //       .reduce((acc: number, curr: number) => acc + curr, 0) || 0;
-    //   dispatch(setSelectedMonthRevenue(filteredRevenue));
-    // }
+  //setting currentmonth transactions in state
+  // const currMonthTransactions =
+  //   allTransactions?.filter(
+  //     (tran) => new Date(tran.createdAt).getMonth() === Number(currentMonth)
+  //   ) || [];
+  // dispatch(setSelectedMonthTransactions(currMonthTransactions?.length));
+  // //setting selected month revenue in state
+  // if (currMonthTransactions.length > 0) {
+  //   const filteredRevenue =
+  //     currMonthTransactions
+  //       .map((tran) => tran.plan.amount)
+  //       .reduce((acc: number, curr: number) => acc + curr, 0) || 0;
+  //   dispatch(setSelectedMonthRevenue(filteredRevenue));
+  // }
   // }, [allTransactions]);
   return (
     <Popover>

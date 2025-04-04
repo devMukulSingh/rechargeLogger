@@ -38,10 +38,8 @@ const DashboardData: FC<DashboardDataProps> = () => {
 
   ///////////////////////////////////////////////
   return (
-    <div className="flex flex-col gap-5">
-      <div className="flex gap-2">
-        <DateFilter disabled={isFetching} />
-      </div>
+    <div className="flex border  rounded-md p-5 flex-col gap-5">
+      <DateFilter disabled={isFetching} />
       <div className="grid grid-cols-1 lg:grid-cols-4 md:grid-cols-3 gap-3">
         <Suspense fallback={<CardSkeleton />}>
           <TotalRevenue totalRevenue={data?.totalRevenue} />
