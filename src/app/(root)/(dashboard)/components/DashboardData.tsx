@@ -30,6 +30,7 @@ const DashboardData: FC<DashboardDataProps> = () => {
   ).toISOString();
   const from = searchParams.get("from") || defaultFrom;
   const to = searchParams.get("to") || currDate.toISOString();
+
   const { data, isFetching, isLoading } =
     trpc.analyticsRouter.getFilteredRevenue.useQuery({
       from,

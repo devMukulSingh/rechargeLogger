@@ -4,7 +4,7 @@ import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/src/lib/prisma";
 import { IgraphData } from "@/src/app/(root)/(dashboard)/components/ChartSection";
 import { Plan } from "@prisma/client";
-import { getYear } from "date-fns";
+import { getDate, getYear } from "date-fns";
 
 type TYear = {
   year: string;
@@ -90,7 +90,7 @@ export const analyticsRouter = router({
       const { from, to } = input;
 
       let transactions: { plan: Plan }[];
-      if (from !== "" && to !== "") {
+      if (from !== "null" && to !== "null") {
         transactions = await prisma.transaction.findMany({
           where: {
             userId,
@@ -103,11 +103,30 @@ export const analyticsRouter = router({
             plan: true,
           },
         });
-      } else {
+      } else if (to === "null") {
+        const date = new Date(from);
         transactions = await prisma.transaction.findMany({
           where: {
             userId,
-            createdAt: to === "" ? from : to,
+            createdAt: {
+              gte: new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0),
+              lte: new Date(date.getFullYear(), date.getMonth(), date.getDate(), 23, 59, 59)
+            }
+          },
+          select: {
+            plan: true,
+          },
+        });
+      }
+      else {
+        const date = new Date(to);
+        transactions = await prisma.transaction.findMany({
+          where: {
+            userId,
+            createdAt: {
+              gte: new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0),
+              lte: new Date(date.getFullYear(), date.getMonth(), date.getDate(), 23, 59, 59)
+            }
           },
           select: {
             plan: true,

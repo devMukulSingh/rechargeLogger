@@ -38,28 +38,16 @@ const DateFilter = (props: Props) => {
 
   //handling month change eveent
   const debouncedChange = debounce((date: DateRange | undefined) => {
+    console.log({
+      date
+    })
     const params = new URLSearchParams(searchParams.toString());
-    params.set("from", date?.from?.toISOString() || "");
-    params.set("to", date?.to?.toISOString() || "");
+    params.set("from", date?.from?.toISOString() || "null");
+    params.set("to", date?.to?.toISOString() || "null");
     router.push(`/?${params.toString()}`);
-  }, 2000);
+  }, 1000);
 
-  // useEffect(() => {
-  //setting currentmonth transactions in state
-  // const currMonthTransactions =
-  //   allTransactions?.filter(
-  //     (tran) => new Date(tran.createdAt).getMonth() === Number(currentMonth)
-  //   ) || [];
-  // dispatch(setSelectedMonthTransactions(currMonthTransactions?.length));
-  // //setting selected month revenue in state
-  // if (currMonthTransactions.length > 0) {
-  //   const filteredRevenue =
-  //     currMonthTransactions
-  //       .map((tran) => tran.plan.amount)
-  //       .reduce((acc: number, curr: number) => acc + curr, 0) || 0;
-  //   dispatch(setSelectedMonthRevenue(filteredRevenue));
-  // }
-  // }, [allTransactions]);
+
   return (
     <Popover>
       <PopoverTrigger asChild className="text-black">
@@ -134,3 +122,19 @@ export default DateFilter;
 //   //   dispatch(setSelectedMonthRevenue(filteredRevenue));
 //   // } else dispatch(setSelectedMonthRevenue(0));
 // };
+  // useEffect(() => {
+  //setting currentmonth transactions in state
+  // const currMonthTransactions =
+  //   allTransactions?.filter(
+  //     (tran) => new Date(tran.createdAt).getMonth() === Number(currentMonth)
+  //   ) || [];
+  // dispatch(setSelectedMonthTransactions(currMonthTransactions?.length));
+  // //setting selected month revenue in state
+  // if (currMonthTransactions.length > 0) {
+  //   const filteredRevenue =
+  //     currMonthTransactions
+  //       .map((tran) => tran.plan.amount)
+  //       .reduce((acc: number, curr: number) => acc + curr, 0) || 0;
+  //   dispatch(setSelectedMonthRevenue(filteredRevenue));
+  // }
+  // }, [allTransactions]);
