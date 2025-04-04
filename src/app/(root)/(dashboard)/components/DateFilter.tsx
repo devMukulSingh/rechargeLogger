@@ -35,19 +35,7 @@ const DateFilter = (props: Props) => {
     from: new Date(currentYear, currentMonth, 1),
     to: new Date(),
   });
-  const dispatch = useAppDispatch();
-  const {
-    data: allTransactions,
-    error,
-    isError,
-  } = trpc.transactionRouter.getAllTransactions.useQuery(undefined, {
-    refetchOnWindowFocus: false,
-  });
 
-  if (isError) {
-    console.log(error);
-    toast.error(error.message);
-  }
 
   //handling month change eveent
   const debouncedChange = debounce((date: DateRange | undefined) => {
@@ -55,16 +43,15 @@ const DateFilter = (props: Props) => {
     params.set("from", date?.from?.toISOString() || "");
     params.set("to", date?.to?.toISOString() || "");
     router.push(`/?${params.toString()}`);
-  },2000);
+  }, 2000);
 
-  useEffect(() => {
+  // useEffect(() => {
     //setting currentmonth transactions in state
     // const currMonthTransactions =
     //   allTransactions?.filter(
     //     (tran) => new Date(tran.createdAt).getMonth() === Number(currentMonth)
     //   ) || [];
     // dispatch(setSelectedMonthTransactions(currMonthTransactions?.length));
-
     // //setting selected month revenue in state
     // if (currMonthTransactions.length > 0) {
     //   const filteredRevenue =
@@ -73,7 +60,7 @@ const DateFilter = (props: Props) => {
     //       .reduce((acc: number, curr: number) => acc + curr, 0) || 0;
     //   dispatch(setSelectedMonthRevenue(filteredRevenue));
     // }
-  }, [allTransactions]);
+  // }, [allTransactions]);
   return (
     <Popover>
       <PopoverTrigger asChild className="text-black">
@@ -82,7 +69,7 @@ const DateFilter = (props: Props) => {
           variant={"outline"}
           className={cn(
             "w-[300px] justify-start text-left font-normal",
-            !selectedDateRange && "text-muted-foreground"
+            !selectedDateRange && "text-muted-foreground",
           )}
         >
           <CalendarIcon className="mr-2 h-4 w-4" />

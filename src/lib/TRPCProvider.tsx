@@ -25,8 +25,7 @@ export default function TRPCProvider({ children }: { children: ReactNode }) {
           queries: {
             staleTime: Infinity,
             refetchOnWindowFocus: false,
-            retry:false,
-          
+            retry: false,
           },
           mutations: {},
         },

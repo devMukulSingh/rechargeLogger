@@ -12,10 +12,10 @@ export interface IapiResponse {
   totalPage?: number;
 }
 const TotalRevenue = lazy(
-  () => import("@/src/app/(root)/(dashboard)/components/TotalRevenue")
+  () => import("@/src/app/(root)/(dashboard)/components/TotalRevenue"),
 );
 const Sales = lazy(
-  () => import("@/src/app/(root)/(dashboard)/components/Sales")
+  () => import("@/src/app/(root)/(dashboard)/components/Sales"),
 );
 
 interface DashboardDataProps {}
@@ -26,21 +26,21 @@ const DashboardData: FC<DashboardDataProps> = () => {
   const defaultFrom = new Date(
     currDate.getFullYear(),
     currDate.getMonth(),
-    1
+    1,
   ).toISOString();
   const from = searchParams.get("from") || defaultFrom;
   const to = searchParams.get("to") || currDate.toISOString();
-  const {data,isFetching,isLoading} = trpc.transactionRouter.getFilteredRevenue.useQuery({
-    from,
-    to,
-  });
+  const { data, isFetching, isLoading } =
+    trpc.analyticsRouter.getFilteredRevenue.useQuery({
+      from,
+      to,
+    });
 
   ///////////////////////////////////////////////
   return (
     <div className="flex flex-col gap-5">
       <div className="flex gap-2">
-        <DateFilter disabled={isFetching}/>
-
+        <DateFilter disabled={isFetching} />
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-4 md:grid-cols-3 gap-3">
         <Suspense fallback={<CardSkeleton />}>
